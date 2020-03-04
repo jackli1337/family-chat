@@ -1,0 +1,109 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*==============================================================
+1 COLORS & OPACITY
+2 BASIC SETUP
+3 CONTENT
+4 NAVIGATION
+5 add more..
+-- enforce the 4 line gap between each section --
+-- enforce CSS header styling                  --
+==============================================================*/
+
+
+
+
+/* ===== 1 COLORS & OPACITY ===== */
+:root {
+    --content0: #FFFFFF;    /*Primary: Default text/icon color*/
+    --content1: #65ACEE;    /*Secondary: Sub-menus, social buttons, status*/
+
+    --bg0: #FFFFFF;         /*Default background*/
+    --bg1: #5BC4E5;         /*Navbar and shop/all other buttons*/
+    --bg2: #DBF0F8;         /*Social bar*/
+
+    --op0: 60%;                /*Opacity: inactive for primary elements*/
+    --op0: 30%;                /*Opacity: inactive for secondary elements*/
+}
+
+
+
+
+/* ===== 2 BASIC SETUP ===== */
+* {
+    font-family: 'Raleway', 'Arial', 'San-Serif'; 
+    text-decoration: none;
+    
+    margin: 0px;
+    padding: 0px;
+    
+    box-sizing: border-box;
+    
+    list-style: none;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--content0);
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    text-align: left;
+    
+    background: var(--bg0);
+    height: 100vh;
+}
+
+body {
+    display: grid;
+    grid-template: repeat(12, 1fr) / repeat(12, 1fr);
+    width:100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+/* ===== 3 CONTENT ===== */
+main {
+    grid-column: 3 / -1;
+    grid-row: 3 / -1;
+    
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+/* ===== 4 NAVIGATION ===== */
+nav {
+    grid-column: 1 / -1;
+
+    background-color: var(--bg1);
+    display: flex;
+    flex-direction: row;
+}
+
+.social {
+    grid-column: 1 / 3;
+    grid-row: 2/-1; 
+
+    background-color: var(--bg2);
+}
+
+
+
+
+/* ===== 5 CATEGORY ===== */
+
