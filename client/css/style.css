@@ -7,7 +7,8 @@
 3 CONTENT
 4 NAVIGATION
 5 SOCIAL
-6 add more..
+6 MESSAGES
+7 add more..
 -- enforce the 4 line gap between each section --
 -- enforce CSS header styling                  --
 ==============================================================*/
@@ -85,8 +86,8 @@ h6 { font-size: 14px; }
 
 /* ===== 3 CONTENT ===== */
 main {
-    grid-column: 4 / -1;
-    grid-row: 3 / -1;
+    grid-column: 3 / -1;
+    grid-row: 2 / -1;
     
     width: 100%;
     height: 100%;
@@ -301,5 +302,180 @@ nav {
     color: var(--content1);
 }
 
-/* ===== 6 CATEGORY ===== */
+/* ===== 6 MESSAGES ===== */
+.messages-chat-box {
+    height: 100%;
+}
+.chat-box-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/* --- 6.1 header --- */
+.chat-box-header {
+    display: flex;
+    flex-direction: row;
+    flex: 0 1 65px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+.chat-box-header h3 {
+    text-transform: none;
+    color: black;
+}
+.chat-box-header i {
+    font-size: 24px;
+    color: var(--content1);
+}
+/* --- 6.2 messages --- */
+.chat-box-messages {
+    flex: 1 1 auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+}
+.messages-container {
+    height: 100%;
+    overflow: scroll;
+}
+.message-left-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+.message-left {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+.message-pfp img{
+    width: 48px;
+    height: 48px;
+    border-radius: 150px;
+}
+.message-left .message-info {
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+}
+.message-left .message-from {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.message-left .message-message {
+    position: relative;
+    background: var(--content1);
+    border-radius: .4em;
+    padding: 10px;
+    font-size: 18px;
+}
+.message-left .message-message:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-right-color: var(--content1);
+    border-left: 0;
+    margin-top: -5px;
+    margin-left: -5px;
+}
+.message-right-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+.message-right {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+.message-right .message-info {
+    display: flex;
+    flex-direction: column;
+    padding-right: 15px;
+}
+.message-right .message-from {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: right;
+}
+.message-right .message-message {
+    position: relative;
+    background: var(--content1);
+    border-radius: .4em;
+    padding: 10px;
+    font-size: 18px;
+}
+.message-right .message-message:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-left-color: var(--content1);
+    border-right: 0;
+    margin-top: -5px;
+    margin-right: -5px;
+}
+/* --- 6.3 text --- */
+.chat-box-text {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 200px;
+}
+.chat-box-icons {
+    display: flex;
+    flex-direction: row;
+    flex: 0 1 40px;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+.icons-left, .icons-right{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+}
+.icons-left a {
+    font-size: 24px;
+    margin-right: 10px;
+    color: var(--content1);
+}
+.icons-right a {
+    font-size: 24px;
+    margin-left: 10px;
+    color: var(--content1);
+}
+.message-input-container {
+    flex: 1 1 auto;
+    padding: 0 20px;
+    position: relative;
+}
+#message-input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    resize: none;
+    font-size: 16px;
+}
+.message-send-button {
+    display: flex;
+    flex-direction: row;
+    flex: 0 1 40px;
+    justify-content: flex-end;
+    padding: 0 20px;
+}
+.message-send-button a {
+    font-size: 24px;
+    margin-left: 10px;
+    color: var(--content1);
+}
+/* ===== 7 CATEGORY ===== */
 
