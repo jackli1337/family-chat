@@ -9,7 +9,8 @@
 5 SOCIAL
 6 MESSAGES
 7 FEED
-8 add more..
+8 PORTAL
+9 add more..
 -- enforce the 4 line gap between each section --
 -- enforce CSS header styling                  --
 ==============================================================*/
@@ -83,6 +84,8 @@ h3 { font-size: 24px; }
 h4 { font-size: 18px; }
 h5 { font-size: 16px; }
 h6 { font-size: 14px; }
+
+
 
 
 /* ===== 3 CONTENT ===== */
@@ -181,6 +184,9 @@ nav {
 .nav-user-container a {
     color: #FFFFFF;
 }
+
+
+
 
 /* ===== 5 SOCIAL ===== */
 .social {
@@ -302,6 +308,9 @@ nav {
     font-size: 16px;
     color: var(--content1);
 }
+
+
+
 
 /* ===== 6 MESSAGES ===== */
 .messages-chat-box {
@@ -681,4 +690,17 @@ h1 {
     color:#5BC4E5;
 }
 
-/* ===== 8 CATEGORY ===== */
+
+
+
+/* ===== 8 PORTAL ===== */
+.portal {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    background-color: var(--bg1);
+}
+
+
+
+
+/* ===== 9 CATEGORY ===== */
