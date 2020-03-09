@@ -20,8 +20,10 @@
 
 /* ===== 1 COLORS & OPACITY ===== */
 :root {
-    --content0: #FFFFFF;    /*Primary: Default text/icon color*/
-    --content1: #65ACEE;    /*Secondary: Sub-menus, social buttons, status*/
+    --content0: #FFFFFF;    /*Primary:      Default text/icon color*/
+    --content1: #65ACEE;    /*Secondary:    Sub-menus, social buttons, status*/
+    --content2: #B8B8B8;    /*Tertiary:     Small-text items*/
+    --content3: #000000;    /**/
 
     --bg0: #FFFFFF;         /*Default background*/
     --bg1: #5BC4E5;         /*Navbar and shop/all other buttons*/
@@ -698,6 +700,84 @@ h1 {
     grid-column: 1 / -1;
     grid-row: 1 / -1;
     background-color: var(--bg1);
+    z-index: 0;
+}
+.portal>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.signup, .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 3;
+}
+label {
+    font-size: 130%;
+    width: 80%;
+    color: var(--content3);
+}
+input {
+    width: 85%;
+    padding: 8px 15px;
+    margin: 10px 5px;
+    background-color: var(--bg0);
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+input[type="text"], input[type="password"] {
+    border-radius: 25px;
+}
+input[type="submit"] {
+    width: fit-content;
+    font-weight: 800;
+    cursor: pointer;
+    background-image: var(--bg1)
+}
+input[type="submit"]:last-of-type {
+    margin-top: 50px;
+}
+ol {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    padding: 25px 50px;
+    z-index: 3;
+    
+    text-align: right;
+    font-size: 80%;
+    color: var(--content2);
+}
+ol>li {
+    padding-right: 25px;
+}
+ol>li:last-of-type {
+    padding-right: 0;
+}
+.canted {
+    background-color: var(--bg2);
+    width: 100%;
+    height: 150%;
+
+    position: fixed;
+    top: -25%;
+    right: -40%;
+    
+    transform: rotate(15deg);
+    z-index: -1;
+}
+.hidden {
+    display: none;
 }
 
 
