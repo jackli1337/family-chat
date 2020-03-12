@@ -506,7 +506,7 @@ nav {
 .create-post {
     position: fixed;
     left:18%;
-    top: 11.7%;
+    top: 15%;
     height: 350px;
     width: 400px;
     background-color: #65ACEE;
@@ -551,7 +551,6 @@ nav {
     background-color: #5BC4E5;
     color: white;
     transition-duration: 0.2s;
-    float: right;
     font-size: 15px;
     display: inline-block;
     margin: 5px;
