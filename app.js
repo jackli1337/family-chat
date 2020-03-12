@@ -3,6 +3,12 @@ const app = express();
 
 
 <!--Start Of Page Routing-->
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/client/index.html');
+});
+app.get('/index.html', function (req, res) {
+    res.sendFile(__dirname + '/client/index.html');
+});
 app.get('/portal.html', function (req, res) {
     res.sendFile(__dirname + '/client/portal.html');
 });

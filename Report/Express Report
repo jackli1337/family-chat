@@ -1,0 +1,27 @@
+What does this technology (library/framework/service) accomplish for you?
+    Express was used in order to serve static page files for phase one of our project.
+
+How does this technology accomplish what it does?
+    First we use the express() function to create a new Express application
+        This code can be found here...
+        Creating App: https://github.com/expressjs/express/blob/c0136d8b48dd3526c58b2ad8666fb4b12b55116c/lib/express.js#L37
+    When a client requests for a specific route in our server, express will be able to handle that
+    using the get function and receive the client's request. It will then parse the headers and it will then
+    send a response back to the client using the sendFile function with the file's name as the parameter.
+        This code can be found here...
+        Header Parsing: https://github.com/expressjs/express/blob/c0136d8b48dd3526c58b2ad8666fb4b12b55116c/lib/request.js#L65
+        Method Used: https://github.com/expressjs/express/blob/c0136d8b48dd3526c58b2ad8666fb4b12b55116c/lib/application.js#L472
+        Routing: https://github.com/expressjs/express/blob/c0136d8b48dd3526c58b2ad8666fb4b12b55116c/lib/router/route.js#L192
+
+What license or terms of service apply to this technology?
+    MIT License: https://github.com/expressjs/express/blob/master/LICENSE
+        This means that we can deploy our web application as normal since MIT License says:
+
+            "Permission is hereby granted, free of charge, to any person obtaining a copy of this
+            software and associated documentation files (the "Software"), to deal in the Software
+            without restriction, including without limitation the rights to use, copy, modify, merge,
+            publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+            to whom the Software is furnished to do so, subject to the following conditions:
+
+            The above copyright notice and this permission notice shall be included in all copies or
+            substantial portions of the Software."
