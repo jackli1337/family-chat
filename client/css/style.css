@@ -10,7 +10,8 @@
 6 MESSAGES
 7 FEED
 8 PORTAL
-9 add more..
+9 PROFILE
+10 add more..
 -- enforce the 4 line gap between each section --
 -- enforce CSS header styling                  --
 ==============================================================*/
@@ -28,7 +29,7 @@
     --bg2: #DBF0F8;         /*Social bar*/
 
     --op0: 60%;                /*Opacity: inactive for primary elements*/
-    --op0: 30%;                /*Opacity: inactive for secondary elements*/
+    --op1: 30%;                /*Opacity: inactive for secondary elements*/
 }
 
 
@@ -702,4 +703,86 @@ h1 {
 
 
 
-/* ===== 9 CATEGORY ===== */
+/* ===== 9 PROFILE ===== */
+.profile {
+}
+.profile-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+.profile-pfp img{
+    display: block;
+    width: 256px;
+    height: 256px;
+    border-radius: 150px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px;
+    color: black;
+}
+
+.profile-name {
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+
+.profile-name h3 {
+    text-transform: none;
+}
+
+.follow-button {
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 14px;
+    font-weight: 600;
+    outline: 0;
+    white-space: nowrap;
+    width: 75px;
+    background: var(--bg1);
+    border-color: var(--bg1);
+    color: var(--content0);
+    cursor: pointer;
+    margin: 0 15px;
+}
+
+.follow-button:hover {
+    opacity: var(--op0);
+}
+
+.family-button {
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 14px;
+    font-weight: 600;
+    outline: 0;
+    white-space: nowrap;
+    width: 100px;
+    background: var(--bg1);
+    border-color: var(--bg1);
+    color: var(--content0);
+    cursor: pointer;
+}
+
+.family-button:hover {
+    opacity: var(--op0);
+}
+
+.profile-stats {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.profile-stats div {
+    padding: 15px;
+}
+/* ===== 10 CATEGORY ===== */
