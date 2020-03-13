@@ -32,6 +32,10 @@ app.get('/css/style.css', function (req, res) {
 });
 app.get('/img/Profile%20Picture.png', function (req, res) {
     res.sendFile(__dirname + '/client/img/Profile Picture.png');
+    res
+});
+app.get('/img/Profile%20Picture.png', function (req, res) {
+    res.sendFile(__dirname + '/client/img/sunset.jpg');
 });
 <!--End Of Required Files Routing-->
 
