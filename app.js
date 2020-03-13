@@ -34,8 +34,32 @@ app.get('/img/Profile%20Picture.png', function (req, res) {
     res.sendFile(__dirname + '/client/img/Profile Picture.png');
     res
 });
-app.get('/img/Profile%20Picture.png', function (req, res) {
+app.get('/img/sunset.jpg', function (req, res) {
     res.sendFile(__dirname + '/client/img/sunset.jpg');
+});
+app.get('/img/Picture0331.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0331.JPG');
+});
+app.get('/img/Picture0333.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0333.JPG');
+});
+app.get('/img/Picture0361.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0361.JPG');
+});
+app.get('/img/Picture0367.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0367.JPG');
+});
+app.get('/img/Picture0368.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0368.JPG');
+});
+app.get('/img/Picture0369.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0369.JPG');
+});
+app.get('/img/Picture0700.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture0700.JPG');
+});
+app.get('/img/Picture1139.JPG', function (req, res) {
+    res.sendFile(__dirname + '/client/img/Picture1139.JPG');
 });
 <!--End Of Required Files Routing-->
 
