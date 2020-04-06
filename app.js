@@ -1,9 +1,14 @@
-const express = require('express');
-const path = require('path');
-const escapeHtml = require('escape-html');
-const app = express();
-const pageRouter = require('./routes/pages');
-const fileRouter = require('./routes/files');
+const
+    express = require('express'),
+    path = require('path'),
+    escapeHtml = require('escape-html'),
+    app = express(),
+    http = require(`http`).Server(app),
+    io = require(`socket.io`)(http),
+
+    pageRouter = require('./routes/pages'),
+    fileRouter = require('./routes/files');
+
 
 // <!--Setting View Engine-->
 app.set('views', path.join(__dirname, 'views'));
@@ -22,12 +27,12 @@ app.use((req, res, next) => {
     err.status = 404;
     next(err);
 });
-app.use((err, req, res, next) =>{
+app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    res.render('error', {errorMsg:err.message});
+    res.render('error', { errorMsg: err.message });
 });
 
 // <!--Start Website-->
-app.listen('3000', () => {
+http.listen('3000', () => {
     console.log('Server Started on Port 3000')
 });

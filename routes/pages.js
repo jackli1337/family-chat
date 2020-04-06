@@ -4,10 +4,10 @@ const router = express.Router();
 
 // Login/Registration Portal
 router.get('/', function (req, res) {
-    res.render('portal');
+    res.render('index');
 });
 
-// Login/Registration Portal
+// Feed
 router.get('/feed', function (req, res) {
     res.render('feed');
 });
