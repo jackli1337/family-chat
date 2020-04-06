@@ -5,12 +5,10 @@ const
     app = express(),
     http = require(`http`).Server(app),
     io = require(`socket.io`)(http),
-    upload = require("express-fileupload");
+    upload = require("express-fileupload"),
 
-app.use(upload());
-
-    pageRouter = require('./routes/pages');
-    fileRouter = require('./routes/files');
+    pageRouter = require('./routes/pages'),
+    fileRouter = require('./routes/files'),
 
     mediashareRouter = require('./routes/mediasharing');
 
@@ -27,6 +25,7 @@ app.use(pageRouter);
 app.use(fileRouter);
 // Media Share Files
 app.use(mediashareRouter);
+app.use(upload());
 // Error Handling
 app.use((req, res, next) => {
     var err = new Error('Page not found');
