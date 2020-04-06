@@ -657,7 +657,6 @@ nav {
     color: #5BC4E5;
 }
 
-
 .post {
     background: white;
     width: 700px;
@@ -670,6 +669,12 @@ nav {
 
 .post-btn-area{
     display: inline;
+}
+
+#file{
+    background-color: #DBF0F8;
+    color: black;
+    width: 280px;
 }
 
 .post-top {

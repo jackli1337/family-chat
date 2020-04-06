@@ -34,16 +34,10 @@
 
 				<div class="create-post-header">Create Post</div>
 
-				<form id="user-form" method="post" action="/create-post">
-					<textarea name="userpost-txt" form="user-form" class="create-post-txt"
-						placeholder="What would you like to post?"></textarea>
-					<div class="post-btn-area">
-						<div id="file-upload-section">
-							<input type="file" id="img" name="img" accept="image/png, image/jpeg">
-							<div id="file-upload-filename"></div>
-							<button type="submit" class="create-post-btn">Post</button>
-						</div>
-					</div>
+				<form id="user-form" method="post" action="/create-post" enctype="multipart/form-data">
+					<textarea name="userpost-txt" form="user-form" class="create-post-txt" placeholder="What would you like to post?"></textarea>
+					<input type="file" id="file" name="file">
+					<button type="submit" class="create-post-btn">Post</button>
 				</form>
 
 			</div>
