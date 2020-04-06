@@ -1,66 +1,33 @@
 const express = require('express');
+const path = require('path');
+const escapeHtml = require('escape-html');
 const app = express();
+const pageRouter = require('./routes/pages');
+const fileRouter = require('./routes/files');
 
+// <!--Setting View Engine-->
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-<!--Start Of Page Routing-->
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/client/index.html');
+// <!--Start Routing-->
+// Serve Static Files
+app.use(express.static(path.join(__dirname, 'client')));
+// Serve Pages
+app.use(pageRouter);
+// Serve Files
+app.use(fileRouter);
+// Error Handling
+app.use((req, res, next) => {
+    var err = new Error('Page not found');
+    err.status = 404;
+    next(err);
 });
-app.get('/index.html', function (req, res) {
-    res.sendFile(__dirname + '/client/index.html');
+app.use((err, req, res, next) =>{
+    res.status(err.status || 500);
+    res.render('error', {errorMsg:err.message});
 });
-app.get('/portal.html', function (req, res) {
-    res.sendFile(__dirname + '/client/portal.html');
-});
-app.get('/feed.html', function (req, res) {
-    res.sendFile(__dirname + '/client/feed.html');
-});
-app.get('/profile.html', function (req, res) {
-    res.sendFile(__dirname + '/client/profile.html');
-});
-app.get('/messages.html', function (req, res) {
-    res.sendFile(__dirname + '/client/messages.html');
-});
-app.get('/family.html', function (req, res) {
-    res.sendFile(__dirname + '/client/family.html');
-});
-<!--End Of Page Routing-->
 
-<!--Start Of Required Files Routing-->
-app.get('/css/style.css', function (req, res) {
-    res.sendFile(__dirname + '/client/css/style.css');
+// <!--Start Website-->
+app.listen('3000', () => {
+    console.log('Server Started on Port 3000')
 });
-app.get('/img/Profile%20Picture.png', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Profile Picture.png');
-    res
-});
-app.get('/img/sunset.jpg', function (req, res) {
-    res.sendFile(__dirname + '/client/img/sunset.jpg');
-});
-app.get('/img/Picture0331.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0331.JPG');
-});
-app.get('/img/Picture0333.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0333.JPG');
-});
-app.get('/img/Picture0361.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0361.JPG');
-});
-app.get('/img/Picture0367.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0367.JPG');
-});
-app.get('/img/Picture0368.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0368.JPG');
-});
-app.get('/img/Picture0369.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0369.JPG');
-});
-app.get('/img/Picture0700.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0700.JPG');
-});
-app.get('/img/Picture1139.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture1139.JPG');
-});
-<!--End Of Required Files Routing-->
-
-app.listen('8000');
