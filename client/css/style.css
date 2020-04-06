@@ -668,6 +668,10 @@ nav {
 
 }
 
+.post-btn-area{
+    display: inline;
+}
+
 .post-top {
     display: flex;
     flex: 0 1 65px;
