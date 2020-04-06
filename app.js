@@ -6,15 +6,16 @@ const
     http = require(`http`).Server(app),
     io = require(`socket.io`)(http),
     upload = require("express-fileupload"),
-
     pageRouter = require('./routes/pages'),
     fileRouter = require('./routes/files'),
-
     mediashareRouter = require('./routes/mediasharing');
 
 // <!--Setting View Engine-->
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// <!--File Uploader-->
+app.use(upload());
 
 // <!--Start Routing-->
 // Serve Static Files
@@ -25,7 +26,6 @@ app.use(pageRouter);
 app.use(fileRouter);
 // Media Share Files
 app.use(mediashareRouter);
-app.use(upload());
 // Error Handling
 app.use((req, res, next) => {
     var err = new Error('Page not found');
@@ -37,8 +37,7 @@ app.use((err, req, res, next) => {
     res.render('error', { errorMsg: err.message });
 });
 
-
 // <!--Start Website-->
-http.listen('3000', () => {
-    console.log('Server Started on Port 3000')
+http.listen('8000', () => {
+    console.log('Server Started on Port 8000')
 });
