@@ -1,5 +1,6 @@
 What does this technology (library/framework/service) accomplish for you?
     EJS was used for rendering the pages of this application and setting up templates (partials)
+    This gives us a easier time organizing our html content.
 
 How does this technology accomplish what it does?
     EJS looks for <% and %> syntax in our HTML code so it knows where to use EJS functions
