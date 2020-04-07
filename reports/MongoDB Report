@@ -1,12 +1,17 @@
 What does this technology (library/framework/service) accomplish for you?
-    Path was used for easily joining segments of paths. It solves the problem of us having to type out long paths.
+    MongoDB was used for the database of our application. It provided us a way to store information that the user
+    uploads in a structure that is well organized. We also used it to store the temporary user's ID, FirstName,
+    LastName, FamilyID for Phase 2.
 
 How does this technology accomplish what it does?
-    Path basically reads the concatenate strings in a smart way replacing // with \ etc
-        Code: https://github.com/jinder/path/blob/master/path.js
+    We didn't use much of this technology since it was mostly handled by the Monk module we used. But I will list the
+    links of the equivalent functions that Monk simplified for us.
+    Find: https://github.com/mongodb/node-mongodb-native/blob/master/lib/operations/find.js
+    Insert: https://github.com/mongodb/node-mongodb-native/blob/master/lib/operations/insert_one.js
+    Drop: https://github.com/mongodb/node-mongodb-native/blob/master/lib/operations/drop.js
 
 What license or terms of service apply to this technology?
-    MIT License: https://github.com/jinder/path#license
+    MIT License: https://github.com/mongodb/node-mongodb-native#license
         This means that we can deploy our web application as normal since MIT License says:
 
             "Permission is hereby granted, free of charge, to any person obtaining a copy of this

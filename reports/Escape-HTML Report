@@ -1,9 +1,11 @@
 What does this technology (library/framework/service) accomplish for you?
-    Path was used for easily joining segments of paths
+    This technology will help us patch up HTML/JS injection attacks on our application.
 
 How does this technology accomplish what it does?
-    Escape-HTML helps us prevent HTML/JS injections by replacing symbols with their equivalent entities.
-    Here's the code: https://github.com/component/escape-html/blob/b42947eefa79efff01b3fe988c4c7e7b051ec8d8/index.js#L33
+    Escape-HTML helps us prevent HTML/JS injections by replacing symbols with their equivalent entities. The code
+    basically looks for certain characters that came from user input sources and replaces them with their entity
+    equivalents.
+        Code: https://github.com/component/escape-html/blob/b42947eefa79efff01b3fe988c4c7e7b051ec8d8/index.js#L33
 
 What license or terms of service apply to this technology?
     MIT License: https://github.com/component/escape-html/blob/master/LICENSE
