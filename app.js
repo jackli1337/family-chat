@@ -20,25 +20,15 @@ const
     io = require('socket.io')(server);
     port = 8000;
 
-// <!--Database-->
-let db = monk('mongo:27017/familychat');
-let userCollection = db.get('users');
-userCollection.find({id: '1'}, function (err, temp_user) {
-    if(err) {
-        console.log("Temp User Not Found");
-    }
-    else {
-        console.log('Temp User Found');
-        console.log(temp_user);
-    }
-});
 
 // <!--Setting View Engine-->
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
 // <!--File Uploader-->
 app.use(upload());
+
 
 // <!--Start Routing-->
 // Serve Static Files
@@ -62,11 +52,13 @@ app.use((err, req, res, next) => {
     res.render('error', { errorMsg: err.message });
 });
 
+
 // <!--Socket-->
 // On Connection To Server
 io.on('connection', function(socket) {
     console.log(socket.id + " has connected!");
 });
+
 
 // <!--Start Website-->
 server.listen(port, () => {
