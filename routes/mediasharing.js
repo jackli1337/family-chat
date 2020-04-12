@@ -2,14 +2,18 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 
-var db = require('monk')('localhost:27017/familychat');
+mongo = require('mongodb');
+monk = require('monk');
+db = monk('mongo:27017/familychat');
 
 var postCollection = db.get('post-collection');
 
-
 //
 router.get('/feed', function (req, res) {
-    res.render('feed');
+    postCollection.find({}, function(err, docs) {
+        if (err) throw err;
+        res.render('feed', {items: docs});
+    });
 });
 
 // upload
@@ -47,7 +51,11 @@ router.post('/create-post', (req, res, next) => {
 });
 
 router.get('/get-data', function (req, res, next) {
-    var data = userdata.find({}).then(function (data) {
+    var data = postCollection.find({}, function (err, data) {
+        if (err) {
+            console.log("Error");
+            throw err;
+        }
         console.log(data);
         res.render('feed', {items: data})
     });

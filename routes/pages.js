@@ -7,11 +7,6 @@ router.get('/', function (req, res) {
     res.render('index');
 });
 
-// Feed
-router.get('/feed', function (req, res) {
-    res.render('feed');
-});
-
 // Messages
 router.get('/messages', function (req, res) {
     res.render('messages');
