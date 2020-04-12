@@ -1,4 +1,6 @@
 const
+    fs = require('fs'),
+    archiver = require('archiver'),
     express = require('express'),
     router = express.Router(),
     mongo = require('mongodb'),
@@ -50,6 +52,7 @@ userCollection.find({ id: '1' }, function (err, temp_user) {
         - pfpID
         - userID
         - regDate
+        - images
  */
 let familyCollection = db.get('family');
 
@@ -83,5 +86,39 @@ let commentsCollection = db.get('comment');
         - up/down
  */
 let votingCollection = db.get('voting');
+
+
+// Downloads family data
+// << TESTING >> this is a temp family entry
+// familyCollection.insert(temp_family = {
+//     id: '8888',
+//     nickname: 'lucky',
+//     size: 99,
+//     pfpID: 'none.jpg',
+//     userID: '1',
+//     regDate: Date.now(),
+//     images: 33
+// });
+router.get('/download/:id', function (req, res) {
+    let path = req['path'];
+    familyID = path.split('/')[2];
+    
+    let
+        location = `${__dirname}/../client/family`,
+        output = fs.createWriteStream(`${location}/${familyID}.zip`),
+        archive = archiver('zip', {
+            gzip: true,
+            zlib: { level: 9 } // Sets the compression level.
+        });
+
+    archive.directory(`${location}`, `${familyID}`);
+    archive.pipe(output);
+    archive.finalize();
+    archive.on('error', function (err) { throw err; });
+    output.on('close', function () {
+        res.download(`${location}/${familyID}.zip`);
+    });
+})
+
 
 module.exports = router;
