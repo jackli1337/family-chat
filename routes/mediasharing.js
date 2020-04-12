@@ -1,6 +1,8 @@
-const express = require('express');
-const path = require('path');
-const router = express.Router();
+const
+    express = require('express'),
+    path = require('path'),
+    router = express.Router(),
+    database = require(`./database`);
 
 // 
 router.get('/feed', function (req, res) {
@@ -10,7 +12,7 @@ router.get('/feed', function (req, res) {
 // upload
 
 router.post('/create-post', (req, res) => {
-    if(req.files){
+    if (req.files) {
         console.log(req.files);
 
         var file = req.files.file;
@@ -19,7 +21,7 @@ router.post('/create-post', (req, res) => {
         console.log(filename);
 
         file.mv('./client/users/ids/' + filename, function (err) {
-            if(err) {
+            if (err) {
                 console.log(err);
             } else {
                 console.log("Successfully uploaded file!");
@@ -43,6 +45,7 @@ router.post('/create-post', (req, res) => {
 //
 //     }
 // });
+
 
 
 module.exports = router;

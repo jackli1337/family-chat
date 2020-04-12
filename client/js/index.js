@@ -21,9 +21,6 @@ MW8ivmO7Qto9FlV/FvGr5xsZilj3/hXI00UTPcKi6PYgkrXR5qnb/72ZuRho03fSF5E1xOGg7qvb5VPz
 +k5r77t1B+tb/eZNzJtTt1y+4umXM49b9g1AmFUPvloDdzqsppDweA/RuSOoDLv6D7GvRAKPUP5ceo3DWbX4nFXm5iy8ubEfqCWiut22HDDqZcyBuP6zL6s0euLVzbBqunfWb
 FpTZmhfdjjVFy9seO/6nnH0Mpp/3TjvofAAAAAElFTkSuQmCC
  */
-function saveImage(file) {
-    let node = document.createElement(`a`), ext = ``;
-    node.href = file;
-    node.download = `image.${ext}`
-    node.click();
+function download(link) {
+    window.open(link);
 }
