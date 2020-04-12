@@ -21,81 +21,91 @@
 
 	<link rel="stylesheet" href="/css/style.css" type="text/css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
-		integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+		  integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
 	<title>Family Chat</title>
 </head>
 
 <body>
-	<%- include('partials/nav'); %>
-	<main>
-		<div class="feed-main">
-			<div class="create-post">
+<%- include('partials/nav'); %>
+<main>
+	<div class="feed-main">
+		<div class="create-post">
+			<a href="/get-data">LOAD DATA</a>
+			<div class="create-post-header">Create Post</div>
 
-				<div class="create-post-header">Create Post</div>
+			<form id="user-form" method="post" action="/create-post" enctype="multipart/form-data">
+				<input type="text" name="postuser">
+				<textarea name="posttxt" form="user-form" class="create-post-txt" placeholder="What would you like to post?"></textarea>
+				<input type="file" id="file" name="file">
+				<button type="submit" class="create-post-btn">Post</button>
+			</form>
 
-				<form id="user-form" method="post" action="/create-post" enctype="multipart/form-data">
-					<textarea name="userpost-txt" form="user-form" class="create-post-txt" placeholder="What would you like to post?"></textarea>
-					<input type="file" id="file" name="file">
-					<button type="submit" class="create-post-btn">Post</button>
-				</form>
+		</div>
 
-			</div>
+		<div class="post">
 
-			<div class="post">
+			<% for(var content of items) { %>
+
 				<div class="post-top">
 					<div class="post-pfp">
 						<img src="/img/Profile%20Picture.png">
 					</div>
 
 					<div class="post-creation">
-						<div class="post-name">John Doe</div>
-						<div class="post-date">March 2nd, 2020</div>
+						<div class="post-name"> <%= content.userName%></div>
+						<div class="post-date">April 11th, 2020</div>
 					</div>
 				</div>
 
 				<div class="post-body">
-					<img src="/img/Profile%20Picture.png">
-				</div>
 
-				<div class="post-ratings">
+					<div>PostText: <%= content.userPostText%></div>
 
-					<div class="rate-div">
-						<button><i class="far fa-thumbs-up"></i></button>
-						<h1>32</h1>
-					</div>
-
-					<div class="rate-div">
-						<button><i class="far fa-thumbs-down"></i></button>
-						<h1>4</h1>
-					</div>
-					<div class="rate-div">
-						<!-- If post is an image, render button -->
-						<button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
-					</div>
-					<div class="rate-div">
-						<button><i class="fas fa-share"></i></button>
-					</div>
+					<img src="/users/ids/<%= content.userFile%>>">
 
 				</div>
 
-				<div class="comment-div">
-					<label>
-						<textarea class="post-comment" placeholder="Add a comment..."></textarea>
-					</label>
+			<% } %>
 
-					<input type="file" accept="image/png, image/jpeg">
-					<button class="post-send-btn">Comment</button>
+			<div class="post-ratings">
+
+				<div class="rate-div">
+					<button><i class="far fa-thumbs-up"></i></button>
+					<h1>32</h1>
+				</div>
+
+				<div class="rate-div">
+					<button><i class="far fa-thumbs-down"></i></button>
+					<h1>4</h1>
+				</div>
+				<div class="rate-div">
+					<!-- If post is an image, render button -->
+					<button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
+				</div>
+				<div class="rate-div">
+					<button><i class="fas fa-share"></i></button>
 				</div>
 
 			</div>
+
+			<div class="comment-div">
+				<label>
+					<textarea class="post-comment" placeholder="Add a comment..."></textarea>
+				</label>
+
+				<input type="file" accept="image/png, image/jpeg">
+				<button class="post-send-btn">Comment</button>
+			</div>
+
 		</div>
-	</main>
-    <script src="/js/index.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		var socket = io.connect();
-	</script>
+	</div>
+</main>
+<script src="/js/index.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io.connect();
+</script>
 </body>
 
 </html>
