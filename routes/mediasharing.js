@@ -25,6 +25,7 @@ router.post('/create-post', (req, res) => {
                 console.log(err);
             } else {
                 console.log("Successfully uploaded file!");
+                res.redirect('/feed');
             }
         })
     }
