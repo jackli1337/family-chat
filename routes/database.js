@@ -48,13 +48,35 @@ userCollection.find({ id: '1' }, function (err, temp_user) {
 /* create family collection
         - familyID
         - nickname
-        - size
         - pfpID
         - userID
+        - member ID's
         - regDate
         - images
  */
 let familyCollection = db.get('family');
+// Creating Family
+var temp_fam = {
+    id: "1",
+    nickname: "8888",
+    pfp_id: "1",
+    user_id: 1,
+    members: [0, 1, 2, 3],
+    user_id: 1,
+    reg_date: Date.now(),
+    folder: "family/8888"
+};
+familyCollection.insert(temp_fam);
+// Finding Family
+familyCollection.find({ id: '1' }, function (err, temp_fam) {
+    if (err) {
+        console.log("Temp Family Not Found");
+    }
+    else {
+        console.log('Temp Family Found');
+        console.log(temp_fam);
+    }
+});
 
 
 
@@ -67,7 +89,30 @@ let familyCollection = db.get('family');
         - downvote
  */
 let postCollection = db.get('post');
-
+// Creating User
+var temp_post = {
+    id: "1",
+    user_id: 1,
+    filepath: 'users/id/1',
+    content: {
+        title: "VERY FUNNY!!!",
+        post: "Yo mama's so stupid, if she spoke her mind, she'd be speechless."
+    },
+    comments: [],
+    upvote: [],
+    downvote: []
+};
+postCollection.insert(temp_post);
+// Finding Post
+postCollection.find({ id: '1' }, function (err, temp_post) {
+    if (err) {
+        console.log("Temp Post Not Found");
+    }
+    else {
+        console.log('Temp Post Found');
+        console.log(temp_post);
+    }
+});
 
 
 /* create comment collection
@@ -102,7 +147,7 @@ let votingCollection = db.get('voting');
 router.get('/download/:id', function (req, res) {
     let path = req['path'];
     familyID = path.split('/')[2];
-    
+
     let
         location = `${__dirname}/../client/family`,
         output = fs.createWriteStream(`${location}/${familyID}.zip`),
