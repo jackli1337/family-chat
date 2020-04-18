@@ -6,7 +6,7 @@ mongo = require('mongodb');
 monk = require('monk');
 db = monk('mongo:27017/familychat');
 
-var postCollection = db.get('post-collection');
+let postCollection = db.get('post');
 
 //
 router.get('/feed', function (req, res) {
@@ -34,15 +34,22 @@ router.post('/create-post', (req, res, next) => {
                 console.log("Successfully uploaded file!!!");
                 // res.redirect('/feed');
 
-                var userdata = {
+                var temp_post2 = {
+                    id: "2",
+                    user_id: 1,
+                    filepath: 'users/id/1/' + filename,
+                    content: {
+                        title: req.body.postTitle,
+                        post: req.body.posttxt,
+                    },
+                    comments: [],
+                    upvote: [],
+                    downvote: []
 
-                    userPostText: req.body.posttxt,
-                    userFile: filename,
-                    userName: req.body.postuser
                 };
 
-                postCollection.insert(userdata);
-                console.log(userdata);
+                postCollection.insert(temp_post2);
+                console.log(temp_post2);
                 res.redirect('/get-data');
 
             }

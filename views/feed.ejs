@@ -31,11 +31,10 @@
 <main>
 	<div class="feed-main">
 		<div class="create-post">
-			<a href="/get-data">LOAD DATA</a>
 			<div class="create-post-header">Create Post</div>
 
 			<form id="user-form" method="post" action="/create-post" enctype="multipart/form-data">
-				<input type="text" name="postuser">
+				<input type="text" name="postTitle">
 				<textarea name="posttxt" form="user-form" class="create-post-txt" placeholder="What would you like to post?"></textarea>
 				<input type="file" id="file" name="file">
 				<button type="submit" class="create-post-btn">Post</button>
@@ -45,7 +44,7 @@
 
 		<div class="post">
 
-			<% for(var content of items) { %>
+			<% for(var data of items) { %>
 
 				<div class="post-top">
 					<div class="post-pfp">
@@ -53,16 +52,17 @@
 					</div>
 
 					<div class="post-creation">
-						<div class="post-name"> <%= content.userName%></div>
+						<div class="post-name"> <%= data.user_id%></div>
 						<div class="post-date">April 11th, 2020</div>
 					</div>
 				</div>
 
 				<div class="post-body">
 
-					<div>PostText: <%= content.userPostText%></div>
+					<div>PostTitle: <%= data.content.title%></div>
+					<div>PostText: <%= data.content.post%></div>
 
-					<img src="/users/ids/<%= content.userFile%>>">
+					<img src="/users/ids/<%= data.filepath%>>">
 
 				</div>
 
@@ -70,12 +70,12 @@
 
 				<div class="rate-div">
 					<button><i class="far fa-thumbs-up"></i></button>
-					<h1>32</h1>
+					<h1><%= data.upvote%></h1>
 				</div>
 
 				<div class="rate-div">
 					<button><i class="far fa-thumbs-down"></i></button>
-					<h1>4</h1>
+					<h1><%= data.downvote%></h1>
 				</div>
 				<div class="rate-div">
 					<!-- If post is an image, render button -->

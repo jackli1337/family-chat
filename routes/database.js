@@ -7,9 +7,6 @@ const
     monk = require('monk'),
     db = monk('mongo:27017/familychat');
 
-
-
-
 /* create user collection
         - userID
         - firstname
@@ -163,7 +160,6 @@ router.get('/download/:id', function (req, res) {
     output.on('close', function () {
         res.download(`${location}/${familyID}.zip`);
     });
-})
-
+});
 
 module.exports = router;
