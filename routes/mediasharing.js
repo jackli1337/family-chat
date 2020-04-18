@@ -27,7 +27,7 @@ router.post('/create-post', (req, res, next) => {
 
         console.log(filename);
 
-        file.mv('./client/users/ids/' + filename, function (err) {
+        file.mv('./client/users/ids/1/' + filename, function (err) {
             if(err) {
                 console.log(err);
             } else {
@@ -37,7 +37,7 @@ router.post('/create-post', (req, res, next) => {
                 var temp_post2 = {
                     id: "2",
                     user_id: 1,
-                    filepath: 'users/id/1/' + filename,
+                    filepath: '/users/ids/1/' + filename,
                     content: {
                         title: req.body.postTitle,
                         post: req.body.posttxt,

@@ -90,7 +90,7 @@ let postCollection = db.get('post');
 var temp_post = {
     id: "1",
     user_id: 1,
-    filepath: 'users/id/1',
+    filepath: '/users/ids/1/',
     content: {
         title: "VERY FUNNY!!!",
         post: "Yo mama's so stupid, if she spoke her mind, she'd be speechless."

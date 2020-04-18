@@ -42,10 +42,8 @@
 
 		</div>
 
+		<% for(var data of items) { %>
 		<div class="post">
-
-			<% for(var data of items) { %>
-
 				<div class="post-top">
 					<div class="post-pfp">
 						<img src="/img/Profile%20Picture.png">
@@ -62,7 +60,7 @@
 					<div>PostTitle: <%= data.content.title%></div>
 					<div>PostText: <%= data.content.post%></div>
 
-					<img src="/users/ids/<%= data.filepath%>>">
+					<img src="<%= data.filepath%>">
 
 				</div>
 
@@ -95,7 +93,6 @@
 				<input type="file" accept="image/png, image/jpeg">
 				<button class="post-send-btn">Comment</button>
 			</div>
-
 		</div>
 		<% } %>
 	</div>
