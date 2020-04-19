@@ -93,8 +93,8 @@
 			var siofu = new SocketIOFileUpload(socket);
 
 			// Configure the three ways that SocketIOFileUpload can read files:
-			siofu.listenOnInput(document.getElementById("fp-file"));
-
+			// siofu.listenOnInput(document.getElementById("fp-file"));
+			siofu.listenOnSubmit(document.getElementById('spost'), document.getElementById('fp-file'));
 			// Do something on upload progress:
 			siofu.addEventListener("progress", function(event){
 				var percent = event.bytesLoaded / event.file.size * 100;

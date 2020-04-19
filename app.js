@@ -59,24 +59,23 @@ app.use((err, req, res, next) => {
 io.on('connection', (sock) => {
     console.log(sock.id + " has connected!");
 
+    var uploader = new SocketIOFileUpload();
+    uploader.dir = "client/users/ids/1"; // + FILENAME
+    uploader.listen(sock);
+
+    // Do something when a file is saved:
+    uploader.on("saved", function(event){
+        console.log(event.file);
+    });
+
+    // Error handler:
+    uploader.on("error", function(event){
+        console.log("Error from uploader", event);
+    });
+
     // listens for new post
     sock.on(`spost`, (data) => {
         // saves new post to database
-
-        var uploader = new SocketIOFileUpload();
-        uploader.dir = "/users/ids/1/"; // + FILENAME
-        uploader.listen(sock);
-
-        // Do something when a file is saved:
-        uploader.on("saved", function(event){
-            console.log(event.file);
-        });
-
-        // Error handler:
-        uploader.on("error", function(event){
-            console.log("Error from uploader", event);
-        });
-
         let postCollection = db.get('post');
         let newPost = {
             user_id: 1,
