@@ -22,19 +22,19 @@ router.get('/feed', function (req, res) {
 // router.post('/create-post', (req, res, next) => {
 //     if(req.files){
 //         console.log(req.files);
-
+//
 //         var file = req.files.file;
 //         var filename = file.name;
-
+//
 //         console.log(filename);
-
+//
 //         file.mv('./client/users/ids/1/' + filename, function (err) {
 //             if(err) {
 //                 console.log(err);
 //             } else {
 //                 console.log("Successfully uploaded file!!!");
 //                 // res.redirect('/feed');
-
+//
 //                 var temp_post2 = {
 //                     id: "2",
 //                     user_id: 1,
@@ -46,13 +46,13 @@ router.get('/feed', function (req, res) {
 //                     comments: [],
 //                     upvote: [],
 //                     downvote: []
-
+//
 //                 };
-
+//
 //                 postCollection.insert(temp_post2);
 //                 console.log(temp_post2);
 //                 res.redirect('/get-data');
-
+//
 //             }
 //         });
 //     };

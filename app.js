@@ -2,10 +2,10 @@ const
     http = require(`http`),
     express = require('express'),
     socketio = require(`socket.io`),
+    SocketIOFileUpload = require("socketio-file-upload"),
 
     path = require('path'),
     escapeHtml = require('escape-html'),
-    upload = require("express-fileupload"),
 
     mongo = require('mongodb'),
     monk = require('monk'),
@@ -28,7 +28,7 @@ app.set('view engine', 'ejs');
 
 
 // <!--File Uploader-->
-app.use(upload());
+app.use(SocketIOFileUpload.router);
 
 
 // <!--Start Routing-->
@@ -58,15 +58,29 @@ app.use((err, req, res, next) => {
 // On Connection To Server
 io.on('connection', (sock) => {
     console.log(sock.id + " has connected!");
-    
+
     // listens for new post
     sock.on(`spost`, (data) => {
         // saves new post to database
+
+        var uploader = new SocketIOFileUpload();
+        uploader.dir = "/users/ids/1/"; // + FILENAME
+        uploader.listen(sock);
+
+        // Do something when a file is saved:
+        uploader.on("saved", function(event){
+            console.log(event.file);
+        });
+
+        // Error handler:
+        uploader.on("error", function(event){
+            console.log("Error from uploader", event);
+        });
+
         let postCollection = db.get('post');
         let newPost = {
-            id: "1",
             user_id: 1,
-            filepath: '/users/ids/1/',
+            filepath: uploader.dir,
             content: {
                 title: data.title,
                 post: data.content

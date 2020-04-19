@@ -9,6 +9,7 @@
     "express-fileupload": "^1.1.7-alpha.2",
     "mongodb": "^3.5.5",
     "monk": "^7.1.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "socketio-file-upload": "^0.7.0"
   }
 }

@@ -71,7 +71,7 @@ window.onload = function viaWebSocket() {
     sock.on(`spost`, (data) => {
         renderPost(data);
     });
-}
+};
 
 
 /* ---------- Front-End Features ---------- */
@@ -84,17 +84,17 @@ function renderPost(data) {
         <div class="post">
             <div class="post-author">
                 <div class="post-pfp">
-                    <img src="${data.filepath}">
+                    <img src="/img/Profile%20Picture.png">
                 </div>
                 <div class="post-creation">
-                    <a class="post-name"> ${data.user_id}></a>
+                    <a class="post-name">${data.user_id}</a>
                     <a class="post-date">April 11th, 2020</a>
                 </div>
             </div>
 
             <div class="post-body">
-                <h1 id="postTitle${data.id}"></h1>
-                <p id="postContent${data.id}"></p>
+                <h1 id="postTitle${data._id}"></h1>
+                <p id="postContent${data._id}"></p>
                 <img src="${data.filepath}">
             </div>
 
@@ -112,17 +112,17 @@ function renderPost(data) {
             </form>
         </div>`;
 
-        // update website with BLANK template
+    // update website with BLANK template
     let feed = document.getElementById(`feedView`);
-    feed.appendChild(inject);
+    feed.innerHTML += inject;
 
     // target the blank template and update (each is unique because each post has a unique id from server)
     let
-        postTitle = document.getElementById(`postTitle${data.id}`),
-        postContent = document.getElementById(`postContent${data.id}`),
+        postTitle = document.getElementById(`postTitle${data._id}`),
+        postContent = document.getElementById(`postContent${data._id}`),
         // createTextNode prevents attacks, all data is rendered as text
-        postTitleData = document.createTextNode(data.title),
-        postContentData = document.createTextNode(data.content);
+        postTitleData = document.createTextNode(data.content.title),
+        postContentData = document.createTextNode(data.content.post);
 
     postTitle.appendChild(postTitleData);
     postContent.appendChild(postContentData);
