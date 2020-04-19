@@ -9,6 +9,7 @@ const
 
     mongo = require('mongodb'),
     monk = require('monk'),
+    db = monk('mongo:27017/familychat'),
 
     pageRouter = require('./routes/pages'),
     fileRouter = require('./routes/files'),
@@ -55,8 +56,39 @@ app.use((err, req, res, next) => {
 
 // <!--Socket-->
 // On Connection To Server
-io.on('connection', function(socket) {
-    console.log(socket.id + " has connected!");
+io.on('connection', (sock) => {
+    console.log(sock.id + " has connected!");
+    
+    // listens for new post
+    sock.on(`spost`, (data) => {
+        // saves new post to database
+        let postCollection = db.get('post');
+        let newPost = {
+            id: "1",
+            user_id: 1,
+            filepath: '/users/ids/1/',
+            content: {
+                title: data.title,
+                post: data.content
+            },
+            comments: [],
+            upvote: [],
+            downvote: []
+        };
+        postCollection.insert(newPost);
+
+        // updates all users of new post
+        io.sockets.emit(`spost`, newPost);
+    });
+
+    /* ----- REPLICATE (( SEE INDEX.JS FOR MORE ))----- */
+    // // listens for new comment
+    // sock.on(`scomment`, (data) => {
+    //     // saves new comment to database
+        
+    //     // updates all users of new comment
+    //     io.sockets.emit(`scomment`, newComment);
+    // });
 });
 
 

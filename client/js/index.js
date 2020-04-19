@@ -1,26 +1,144 @@
-// front-end features
+// javascript
 
-/*
-1) get MIME type
-2) convert image to base64
-3) concatenate both and pass into parameter
+/* ---------- AJAX calls (Long-Polling) ---------- */
+// window.onload = setInterval(getFeed(), 1000);
 
-sample:
-data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNQTFRFAAAAPT0
-9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09EvTTBAAAABB0Uk5TAA8fLz9PX29/j5+vv8/f7/rfIY4AAARsSURBVHja7VvZkusqDAyrAQvQ
-/3/teZjExrHDZoGrbl0/z0RtLY1oya/X/8+Nh/NHzYuAGPRz9llERET1GACJiIgYngaAkmvNnwTgERHtgwDefngawDofgDkAwPlp4I4AzHQA/gggstk0jF/P7ELQ3wBQPBoBR
-PRzTyI8P/bBGvh79FMstFXCvDSAt0kHzyBYNv7jj/iAx48DEiwzEfj0AFi/EEw4F+2B/5mfXQsbB4ZDQOKGwM2ioE+4hUdEm3jCjzybRbw4gIXkrxfbySnqCfYhS48rG23fs/
-wRGYdcGIQv1PsOcIgTkp//xTcs4WbyTEjs67pmFfh8+3+X1s0Jy3z7rxezaZ9EdTjI2MC1MpA37LqN65kjdoJuPmtUUpC40NmvLy2WntM3OcH09RupE8KdMLjefufgBE1gvz2
-blnj/2pDY7wikSPold9M+dCVSWpDuln1HUMLuCfsHEndP2H+9uO+kJEfVaicNq+zin9udxY6gQcrRlFeNHUG1oCfpjpIjAtmaukQXHRabpJwdMNlFSzZFdL3Dv4WkrlH4lyH6
-Y6jOgj0BSPUGWV0InrQAztISr2UgahFe1r3XJgHRC9C+qhK3CqC/4H6Sm1XV64ApCKt5NegOgFTGGGPMIlnhx22NA64zhUsppTxVMtcuvY5hcCqX31DhgAu+EgZ+WLjSjoPJv
-F6mBH5lIFvC7wHBJ7kAAAByjFdkAvdDg0o7/PPByiOCSSIvbfhBo6HExvES/ftwjOs7v7iyoZCl0qhMhHWpDQoX9QvH/xJd+osriAbr9ZktEQONCm3yAD5EEU833YWIlgsA1P
-D5UwGAGz4DLAAIw0eAeQBs/CTaZi2o8VNYyAIwP2qAHsCSZYGR6xD5xtgPTwGeBzB+I0Xlj+Oajo2kCEK+GRqfg2sWwEAaKhCNLDdsRCkgnwLg8kEeDyDmLQwHoAp3w+EA1kJ
-PPBoAL6lEYnAZmuLtfCwRbToZLwEYNP7X5Vs33NEFuI15BS6U7+auuydmGkoKXI1Kt9RlIZPHIIllLbfzWwboCm2AF480b7WUQkipDWySkhPlg7ggU9apWPFqkWzV2TZC1Am1
-a1UMltMWW8F6Xve4qpRCX86U3ZQkcEtFF79UKtW8RSJnsvr+IDK7N23HRScH+mrtWQ/RCF3D+DYOaM337bOKftvQ78iKps3fjbDIrkeX22cVLqAKAovVFfD1DzRi/V4AgbWmD
-MW8ivmO7Qto9FlV/FvGr5xsZilj3/hXI00UTPcKi6PYgkrXR5qnb/72ZuRho03fSF5E1xOGg7qvb5VPz2akTmcbnT48LExDCysycxitdGfRcWUbar2gvj59cDfqyH3NoMpNyt
-+k5r77t1B+tb/eZNzJtTt1y+4umXM49b9g1AmFUPvloDdzqsppDweA/RuSOoDLv6D7GvRAKPUP5ceo3DWbX4nFXm5iy8ubEfqCWiut22HDDqZcyBuP6zL6s0euLVzbBqunfWb
-FpTZmhfdjjVFy9seO/6nnH0Mpp/3TjvofAAAAAElFTkSuQmCC
- */
+/* ---------- Websocket (wss) ---------- */
+window.onload = function viaWebSocket() {
+    let sock = io.connect(`${window.location.host}`);
+
+    // ===== Submit a Post ===== //
+    // event listener waiting for action on "post" button
+    this.document.getElementById(`spost`).onclick = () => {
+        // grabbing values from the form
+        let
+            formElement = this.document.getElementById(`form-post`).value,
+            fp_title = this.document.getElementById(`fp-title`).value,
+            fp_content = this.document.getElementById(`fp-content`).value,
+            fp_file = this.document.getElementById(`fp-file`).value;
+
+        // sends data via websocket (sent as an object)
+        sock.emit(`spost`, {
+            title: fp_title,
+            content: fp_content,
+            file: fp_file
+        });
+
+        // resets the values in the form
+        formElement.reset();
+    };
+
+    /* ===== FEEL FREE TO MODIFY LINES 32 - 68 ===== */
+    // // ===== Submit a Comment ===== //
+    // this.document.getElementById(`scomment`).onclick = () => {
+    //     let input = this.document.getElementById(`form-comment`);
+    //     sock.emit(`scomment`, {
+
+    //     });
+    //     input.value = ``;
+    // };
+
+    // // ===== Submit an Upvote ===== //
+    // this.document.getElementById(`supvote`).onclick = () => {
+    //     sock.emit(`supvote`, {
+
+    //     });
+    //     input.value = ``;
+    // };
+
+    // // ===== Submit a Downvote ===== //
+    // this.document.getElementById(`sdownvote`).onclick = () => {
+    //     sock.emit(`sdownvote`, {
+
+    //     });
+    //     input.value = ``;
+    // };
+
+    // // ===== Send a Direct Message ===== //
+    // this.document.getElementById(`smessage`).onclick = () => {
+    //     let input = this.document.getElementById(`form-message`);
+    //     sock.emit(`smessage`, {
+
+    //     });
+    //     input.value = ``;
+    // };
+
+    // sock.onmessage = function (event) {
+    //     renderMessage(event.data, `Others - 00:00 AM`);
+    // };
+
+    // ===== Listener ===== //
+    sock.on(`spost`, (data) => {
+        renderPost(data);
+    });
+}
+
+
+/* ---------- Front-End Features ---------- */
+
+// ===== Render Post ===== //
+function renderPost(data) {
+    // injects template with non-user generated content
+    // *** need to create a function that checks for valid file name (done in App.js?)
+    let inject = `
+        <div class="post">
+            <div class="post-author">
+                <div class="post-pfp">
+                    <img src="${data.filepath}">
+                </div>
+                <div class="post-creation">
+                    <a class="post-name"> ${data.user_id}></a>
+                    <a class="post-date">April 11th, 2020</a>
+                </div>
+            </div>
+
+            <div class="post-body">
+                <h1 id="postTitle${data.id}"></h1>
+                <p id="postContent${data.id}"></p>
+                <img src="${data.filepath}">
+            </div>
+
+            <div class="post-tools">
+                <button><i class="far fa-thumbs-up"></i> ${data.upvote.length}</button>
+                <button><i class="far fa-thumbs-down"></i> ${data.downvote.length}</button>
+                <button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
+                <button><i class="fas fa-share"></i></button>
+            </div>
+
+            <form class="post-comments">
+                <textarea class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
+                <input type="file" accept="image/png, image/jpeg">
+                <input type="submit" class="post-send-btn" placeholder="Comment" />
+            </form>
+        </div>`;
+
+        // update website with BLANK template
+    let feed = document.getElementById(`feedView`);
+    feed.appendChild(inject);
+
+    // target the blank template and update (each is unique because each post has a unique id from server)
+    let
+        postTitle = document.getElementById(`postTitle${data.id}`),
+        postContent = document.getElementById(`postContent${data.id}`),
+        // createTextNode prevents attacks, all data is rendered as text
+        postTitleData = document.createTextNode(data.title),
+        postContentData = document.createTextNode(data.content);
+
+    postTitle.appendChild(postTitleData);
+    postContent.appendChild(postContentData);
+}
+
+// ===== Get Feed ===== //
+// function getFeed() {
+//     let req = new XMLHttpRequest();
+//     req.onreadystatechange = () => {
+//         if (this.readyState === 4 && this.readyState === 1) {
+
+//         }
+//     }
+// }
+
+// ===== Download ===== //
 function download(link) {
     window.open(link);
 }

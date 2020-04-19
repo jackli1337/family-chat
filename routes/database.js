@@ -53,17 +53,17 @@ userCollection.find({ id: '1' }, function (err, temp_user) {
  */
 let familyCollection = db.get('family');
 // Creating Family
-var temp_fam = {
-    id: "1",
-    nickname: "8888",
-    pfp_id: "1",
-    user_id: 1,
-    members: [0, 1, 2, 3],
-    user_id: 1,
-    reg_date: Date.now(),
-    folder: "family/8888"
-};
-familyCollection.insert(temp_fam);
+// var temp_fam = {
+//     id: "1",
+//     nickname: "8888",
+//     pfp_id: "1",
+//     user_id: 1,
+//     members: [0, 1, 2, 3],
+//     user_id: 1,
+//     reg_date: Date.now(),
+//     folder: "family/8888"
+// };
+// familyCollection.insert(temp_fam);
 // Finding Family
 familyCollection.find({ id: '1' }, function (err, temp_fam) {
     if (err) {
@@ -86,20 +86,20 @@ familyCollection.find({ id: '1' }, function (err, temp_fam) {
         - downvote
  */
 let postCollection = db.get('post');
-// Creating User
-var temp_post = {
-    id: "1",
-    user_id: 1,
-    filepath: '/users/ids/1/',
-    content: {
-        title: "VERY FUNNY!!!",
-        post: "Yo mama's so stupid, if she spoke her mind, she'd be speechless."
-    },
-    comments: [],
-    upvote: [],
-    downvote: []
-};
-postCollection.insert(temp_post);
+// Creating Post
+// let temp_post = {
+//     id: "1",
+//     user_id: 1,
+//     filepath: '/users/ids/1/',
+//     content: {
+//         title: "VERY FUNNY!!!",
+//         post: "Yo mama's so stupid, if she spoke her mind, she'd be speechless."
+//     },
+//     comments: [],
+//     upvote: [],
+//     downvote: []
+// };
+// postCollection.insert(temp_post);
 // Finding Post
 postCollection.find({ id: '1' }, function (err, temp_post) {
     if (err) {
