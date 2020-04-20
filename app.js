@@ -73,6 +73,14 @@ io.on('connection', (sock) => {
         console.log("Error from uploader", event);
     });
 
+    socket.on('upvote', function(data){
+        io.sockets.emit('upvote', data);
+            });
+  
+     socket.on('downvote', function(data){
+      io.sockets.emit('downvote', data);
+           });
+
     // listens for new post
     sock.on(`spost`, (data) => {
         // saves new post to database
