@@ -1,0 +1,42 @@
+What does this technology (library/framework/service) accomplish for you?
+    Archiver is used for file and directory compression. It provides us a way to compact multiple files into one
+    so that it can be easily transferred across the internet. This allows users to download files from their family page.
+
+How does this technology accomplish what it does?
+    Start by specifying the compression type and depth of compression. For our use case, there is a specific function 
+    that allows us to input a specific directory. After doing so, the files within the directory are each added to 
+    the archiver. The final destination of the output stream is specified and the archiver closes the output stream as 
+    soon as the writeout is complete. We used a promise to wait for the writeout to be completed, then we allow the user 
+    to download the directory that was just compressed.
+    Archiver: https://www.archiverjs.com/archiver
+    Directory: https://www.archiverjs.com/archiver#directory
+    Finalize: https://www.archiverjs.com/archiver#finalize
+    Pipe: https://www.archiverjs.com/module-plugins_zip-zip#pipe
+    On: https://www.archiverjs.com/module-plugins_zip-zip#on
+    
+What license or terms of service apply to this technology?
+    MIT License: https://github.com/archiverjs/node-archiver/blob/master/LICENSE
+        This means that we can deploy our web application as normal since MIT License says:
+
+            "Copyright (c) 2012-2014 Chris Talkington, contributors.
+
+            Permission is hereby granted, free of charge, to any person
+            obtaining a copy of this software and associated documentation
+            files (the "Software"), to deal in the Software without
+            restriction, including without limitation the rights to use,
+            copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the
+            Software is furnished to do so, subject to the following
+            conditions:
+
+            The above copyright notice and this permission notice shall be
+            included in all copies or substantial portions of the Software.
+
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+            EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+            OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+            NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+            HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+            WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+            FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+            OTHER DEALINGS IN THE SOFTWARE."

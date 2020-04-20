@@ -12,7 +12,9 @@ RUN apt-get install -y npm
 
 COPY . .
 
-RUN npm install
+RUN mv ./node_modules ./node_modules.tmp \
+  && mv ./node_modules.tmp ./node_modules \
+  && npm install
 
 EXPOSE 8000
 

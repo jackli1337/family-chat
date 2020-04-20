@@ -1,66 +1,117 @@
-const express = require('express');
-const app = express();
+const
+    http = require(`http`),
+    express = require('express'),
+    socketio = require(`socket.io`),
+    SocketIOFileUpload = require("socketio-file-upload"),
+
+    path = require('path'),
+    escapeHtml = require('escape-html'),
+
+    mongo = require('mongodb'),
+    monk = require('monk'),
+    db = monk('mongo:27017/familychat'),
+
+    pageRouter = require('./routes/pages'),
+    fileRouter = require('./routes/files'),
+    mediashareRouter = require('./routes/mediasharing'),
+    databaseRouter = require('./routes/database'),
+
+    app = require('express')(),
+    server = require('http').Server(app),
+    io = require('socket.io')(server),
+    port = 8000;
 
 
-<!--Start Of Page Routing-->
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/client/index.html');
-});
-app.get('/index.html', function (req, res) {
-    res.sendFile(__dirname + '/client/index.html');
-});
-app.get('/portal.html', function (req, res) {
-    res.sendFile(__dirname + '/client/portal.html');
-});
-app.get('/feed.html', function (req, res) {
-    res.sendFile(__dirname + '/client/feed.html');
-});
-app.get('/profile.html', function (req, res) {
-    res.sendFile(__dirname + '/client/profile.html');
-});
-app.get('/messages.html', function (req, res) {
-    res.sendFile(__dirname + '/client/messages.html');
-});
-app.get('/family.html', function (req, res) {
-    res.sendFile(__dirname + '/client/family.html');
-});
-<!--End Of Page Routing-->
+// <!--Setting View Engine-->
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-<!--Start Of Required Files Routing-->
-app.get('/css/style.css', function (req, res) {
-    res.sendFile(__dirname + '/client/css/style.css');
-});
-app.get('/img/Profile%20Picture.png', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Profile Picture.png');
-    res
-});
-app.get('/img/sunset.jpg', function (req, res) {
-    res.sendFile(__dirname + '/client/img/sunset.jpg');
-});
-app.get('/img/Picture0331.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0331.JPG');
-});
-app.get('/img/Picture0333.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0333.JPG');
-});
-app.get('/img/Picture0361.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0361.JPG');
-});
-app.get('/img/Picture0367.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0367.JPG');
-});
-app.get('/img/Picture0368.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0368.JPG');
-});
-app.get('/img/Picture0369.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0369.JPG');
-});
-app.get('/img/Picture0700.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture0700.JPG');
-});
-app.get('/img/Picture1139.JPG', function (req, res) {
-    res.sendFile(__dirname + '/client/img/Picture1139.JPG');
-});
-<!--End Of Required Files Routing-->
 
-app.listen('8000');
+// <!--File Uploader-->
+app.use(SocketIOFileUpload.router);
+
+
+// <!--Start Routing-->
+// Serve Static Files
+app.use(express.static(path.join(__dirname, 'client')));
+// Serve Pages
+app.use(pageRouter);
+// Serve Files
+app.use(fileRouter);
+// Media Share Files
+app.use(mediashareRouter);
+// Database Router
+app.use(databaseRouter);
+// Error Handling
+app.use((req, res, next) => {
+    var err = new Error('Page not found');
+    err.status = 404;
+    next(err);
+});
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.render('error', { errorMsg: err.message });
+});
+
+
+// <!--Socket-->
+// On Connection To Server
+io.on('connection', (sock) => {
+    console.log(sock.id + " has connected!");
+
+    var uploader = new SocketIOFileUpload();
+    uploader.dir = "client/users/ids/1"; // + FILENAME
+    uploader.listen(sock);
+
+    // Do something when a file is saved:
+    uploader.on("saved", function (event) {
+        console.log(event.file);
+    });
+
+    // Error handler:
+    uploader.on("error", function (event) {
+        console.log("Error from uploader", event);
+    });
+
+    // listens for new post
+    sock.on(`spost`, (data) => {
+        // saves new post to database
+        let postCollection = db.get('post');
+        let newPost = {
+            user_id: 1,
+            filepath: uploader.dir,
+            content: {
+                title: data.title,
+                post: data.content
+            },
+            comments: [],
+            upvote: [],
+            downvote: []
+        };
+        postCollection.insert(newPost, function (err, postInserted) {
+            io.sockets.emit(`spost`, postInserted);
+        });
+
+        // updates all users of new post
+    });
+
+    /* ----- REPLICATE (( SEE INDEX.JS FOR MORE ))----- */
+    // listens for new comment
+    sock.on(`scomment`, (data) => {
+
+        let postCollection = db.get('post');
+        postCollection.find({ _id: data.post_id }, function (err, post) {
+            if (err) { console.log("Post not found"); }
+            else {
+                post.comments.push(data.content);
+                io.sockets.emit(`scomment`, post);
+            }
+        });
+    });
+});
+
+
+// <!--Start Website-->
+server.listen(port, () => {
+    console.log('Server Started on Port ' + port)
+});
