@@ -18,7 +18,7 @@ const
 
     app = require('express')(),
     server = require('http').Server(app),
-    io = require('socket.io')(server);
+    io = require('socket.io')(server),
     port = 8000;
 
 
@@ -64,12 +64,12 @@ io.on('connection', (sock) => {
     uploader.listen(sock);
 
     // Do something when a file is saved:
-    uploader.on("saved", function(event){
+    uploader.on("saved", function (event) {
         console.log(event.file);
     });
 
     // Error handler:
-    uploader.on("error", function(event){
+    uploader.on("error", function (event) {
         console.log("Error from uploader", event);
     });
 
@@ -88,20 +88,26 @@ io.on('connection', (sock) => {
             upvote: [],
             downvote: []
         };
-        postCollection.insert(newPost);
+        postCollection.insert(newPost, function (err, postInserted) {
+            io.sockets.emit(`spost`, postInserted);
+        });
 
         // updates all users of new post
-        io.sockets.emit(`spost`, newPost);
     });
 
     /* ----- REPLICATE (( SEE INDEX.JS FOR MORE ))----- */
-    // // listens for new comment
-    // sock.on(`scomment`, (data) => {
-    //     // saves new comment to database
-        
-    //     // updates all users of new comment
-    //     io.sockets.emit(`scomment`, newComment);
-    // });
+    // listens for new comment
+    sock.on(`scomment`, (data) => {
+
+        let postCollection = db.get('post');
+        postCollection.find({ _id: data.post_id }, function (err, post) {
+            if (err) { console.log("Post not found"); }
+            else {
+                post.comments.push(data.content);
+                io.sockets.emit(`scomment`, post);
+            }
+        });
+    });
 });
 
 

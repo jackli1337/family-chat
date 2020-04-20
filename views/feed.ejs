@@ -31,14 +31,14 @@
 	<main>
 		<div class="feed">
 			<div id="feedCreate">
-				<form id="form-post">
+				<div id="form-post">
 					<h1>New Post</h1>
 					<input type="text" id="fp-title" name="postTitle" placeholder="Post Title" />
 					<textarea id="fp-content" class="create-post-txt" wrap="hard" placeholder="Post Content"></textarea>
 					<input type="file" id="fp-file" name="file" />
 					<input type="submit" id="spost" class="create-post-btn" onsubmit="return false;"
-						placeholder="post" />
-				</form>
+						value="post" />
+				</div>
 			</div>
 			<div id="feedView">
 
@@ -56,8 +56,8 @@
 					</div>
 
 					<div class="post-body">
-						<h1><%= data.content.title%></h1>
-						<p><%= data.content.post%></p>
+						<h1 id="postTitle<%= data._id%>"><%= data.content.title%></h1>
+						<p id="postContent<%= data._id%>"><%= data.content.post%></p>
 						<img src="<%= data.filepath%>">
 					</div>
 
@@ -69,11 +69,11 @@
 						<button><i class="fas fa-share"></i></button>
 					</div>
 
-					<form class="post-comments">
-						<textarea class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
-						<input type="file" accept="image/png, image/jpeg">
-						<input type="submit" onsubmit="return false;" placeholder="Comment" />
-					</form>
+					<div class="post-comments">
+						<textarea id="pc-comment" class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
+						<input id="pc-file" type="file" accept="image/png, image/jpeg">
+						<input id="c<%= data._id%>" type="submit" onsubmit="comment(this.id)" value="Comment" />
+					</div>
 				</div>
 				<% } %>
 			</div>
@@ -93,8 +93,8 @@
 			var siofu = new SocketIOFileUpload(socket);
 
 			// Configure the three ways that SocketIOFileUpload can read files:
-			// siofu.listenOnInput(document.getElementById("fp-file"));
-			siofu.listenOnSubmit(document.getElementById('spost'), document.getElementById('fp-file'));
+			siofu.listenOnInput(document.getElementById("fp-file"));
+			// siofu.listenOnSubmit(document.getElementById('spost'), document.getElementById('fp-file'));
 			// Do something on upload progress:
 			siofu.addEventListener("progress", function(event){
 				var percent = event.bytesLoaded / event.file.size * 100;

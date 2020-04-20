@@ -12,32 +12,44 @@ window.onload = function viaWebSocket() {
     this.document.getElementById(`spost`).onclick = () => {
         // grabbing values from the form
         let
-            formElement = this.document.getElementById(`form-post`).value,
-            fp_title = this.document.getElementById(`fp-title`).value,
-            fp_content = this.document.getElementById(`fp-content`).value,
-            fp_file = this.document.getElementById(`fp-file`).value;
+            fp_title = this.document.getElementById(`fp-title`),
+            fp_content = this.document.getElementById(`fp-content`),
+            fp_file = this.document.getElementById(`fp-file`);
 
         // sends data via websocket (sent as an object)
         sock.emit(`spost`, {
-            title: fp_title,
-            content: fp_content,
-            file: fp_file
+            title: fp_title.value,
+            content: fp_content.value,
+            file: fp_file.value
         });
 
         // resets the values in the form
-        formElement.reset();
+        fp_title.value = ``;
+        fp_content.value = ``;
+        fp_file.value = ``;
     };
 
-    /* ===== FEEL FREE TO MODIFY LINES 32 - 68 ===== */
-    // // ===== Submit a Comment ===== //
-    // this.document.getElementById(`scomment`).onclick = () => {
-    //     let input = this.document.getElementById(`form-comment`);
-    //     sock.emit(`scomment`, {
+    // ===== Submit a Comment ===== //
+    this.document.getElementById(`scomment`).onclick = () => {
+        let
+            pc_comment = this.document.getElementById(`pc-comment`),
+            pc_file = this.document.getElementById(`pc-file`);
 
-    //     });
-    //     input.value = ``;
-    // };
+        sock.emit(`scomment`, {
+            associated: this.comment(),
+            content: {
+                userID: 1,
+                comment: pc_comment.value,
+                file: pc_file.vlaue
+            }
+        });
 
+        // resets the values in the form
+        pc_comment.value = ``;
+        pc_file.value = ``;
+    };
+
+    /* ===== FEEL FREE TO MODIFY LINES 40 - 68 ===== */
     // // ===== Submit an Upvote ===== //
     // this.document.getElementById(`supvote`).onclick = () => {
     //     sock.emit(`supvote`, {
@@ -71,6 +83,9 @@ window.onload = function viaWebSocket() {
     sock.on(`spost`, (data) => {
         renderPost(data);
     });
+    sock.on(`scomment`, (data) => {
+        renderComment(data);
+    });
 };
 
 
@@ -80,6 +95,7 @@ window.onload = function viaWebSocket() {
 function renderPost(data) {
     // injects template with non-user generated content
     // *** need to create a function that checks for valid file name (done in App.js?)
+    console.info(data);
     let inject = `
         <div class="post">
             <div class="post-author">
@@ -93,8 +109,8 @@ function renderPost(data) {
             </div>
 
             <div class="post-body">
-                <h1 id="postTitle${data._id}"></h1>
-                <p id="postContent${data._id}"></p>
+                <h1 id="postTitle${data._id.toString()}"></h1>
+                <p id="postContent${data._id.toString()}"></p>
                 <img src="${data.filepath}">
             </div>
 
@@ -105,11 +121,11 @@ function renderPost(data) {
                 <button><i class="fas fa-share"></i></button>
             </div>
 
-            <form class="post-comments">
+            <div class="post-comments">
                 <textarea class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
                 <input type="file" accept="image/png, image/jpeg">
-                <input type="submit" class="post-send-btn" placeholder="Comment" />
-            </form>
+                <input id="c${data._id.toString()}" type="submit" onsubmit="comment(this.id)" value="Comment" />
+            </div>
         </div>`;
 
     // update website with BLANK template
@@ -118,8 +134,8 @@ function renderPost(data) {
 
     // target the blank template and update (each is unique because each post has a unique id from server)
     let
-        postTitle = document.getElementById(`postTitle${data._id}`),
-        postContent = document.getElementById(`postContent${data._id}`),
+        postTitle = document.getElementById(`postTitle${data._id.toString()}`),
+        postContent = document.getElementById(`postContent${data._id.toString()}`),
         // createTextNode prevents attacks, all data is rendered as text
         postTitleData = document.createTextNode(data.content.title),
         postContentData = document.createTextNode(data.content.post);
@@ -128,17 +144,18 @@ function renderPost(data) {
     postContent.appendChild(postContentData);
 }
 
-// ===== Get Feed ===== //
-// function getFeed() {
-//     let req = new XMLHttpRequest();
-//     req.onreadystatechange = () => {
-//         if (this.readyState === 4 && this.readyState === 1) {
+// ===== Render Comment ===== //
+function renderComment(data) {
 
-//         }
-//     }
-// }
+}
 
 // ===== Download ===== //
 function download(link) {
     window.open(link);
+}
+
+// ===== GetPost ===== //
+function comment(str) {
+    let string = str.slice(1);
+    console.log(string);
 }
