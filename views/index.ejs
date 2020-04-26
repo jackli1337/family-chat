@@ -46,21 +46,30 @@
                     <li>track locations</li>
                 </ul>
             </div>
-            <form class="signup">
+            <form id="signup-form" action="/register" method="post">
                 <label>Start or join a family circle today!</label>
-                <input type="text" placeholder="Username" name="username">
-                <input type="text" placeholder="Email/Phone Number" name="contact">
-                <input type="text" placeholder="Name" name="name">
-                <input type="password" placeholder="Password" name="password">
-                <input type="password" placeholder="Re-enter password" name="password-re">
-                <a href="feed"><input type="submit" value="join"></a>
+                <label for="signup-firstname">Username</label>
+                <input class="signup-field" id="signup-firstname" type="text" name="firstname" placeholder="Enter your first name" required>
+                <label for="signup-lastname">Username</label>
+                <input class="signup-field" id="signup-lastname" type="text" name="lastname" placeholder="Enter your last name" required>
+                <label for="signup-username">Username</label>
+                <input class="signup-field" id="signup-username" type="text" name="username" placeholder="Enter your username" pattern=".{,12}" title="12 characters maximum!" required>
+                <label for="signup-email">Email</label>
+                <input class="signup-field" id="signup-email" type="email" name="email" placeholder="Enter your email" required>
+                <label for="signup-password">Password</label>
+                <input class="signup-field" id="signup-password" type="password" name="password" placeholder="Enter your desired password" required>
+                <label for="signup-reenter-password">Re-enter Password</label>
+                <input class="signup-field" id="signup-reenter-password" type="password" name="reenter-password" placeholder="Re-enter your desired password" required>
+                <input class="signup-submit" type="submit" value="Join">
                 <input type="submit" value="I already have an account." onclick="login()">
             </form>
-            <form class="login hidden">
+            <form id="signin-form" class="login hidden" action="/login" method="post">
                 <label>Welcome back to the family!</label>
-                <input type="text" placeholder="Email/Phone Number" name="contact">
-                <input type="password" placeholder="Password" name="password">
-                <a href="feed"><input type="submit" value="log in"></a>
+                <label for="signin-username">Username</label>
+                <input class="signin-field" id="signin-username" type="text" name="username" placeholder="Enter your username">
+                <label for="signin-password">Password</label>
+                <input class="signin-field" id="signin-password" type="password" name="password" placeholder="Enter your password">
+                <input class="signin-submit" type="submit" value="Login">
                 <input type="submit" value="I don't have an account." onclick="signup()">
             </form>
             <footer>

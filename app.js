@@ -1,6 +1,8 @@
 const
     http = require(`http`),
     express = require('express'),
+    session = require('express-session'),
+    bodyParser = require('body-parser'),
     socketio = require(`socket.io`),
 
     path = require('path'),
@@ -20,10 +22,24 @@ const
     io = require('socket.io')(server);
     port = 8000;
 
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+// <!--Body Parser-->
+app.use(urlencodedParser);
 
 // <!--Setting View Engine-->
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// <!--Session-->
+let sessionMiddleware = session({
+    secret: 'login-session',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 1000 * 30
+    }
+});
+app.use(sessionMiddleware);
 
 
 // <!--File Uploader-->

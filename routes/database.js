@@ -5,83 +5,61 @@ const
     monk = require('monk'),
     db = monk('mongo:27017/familychat');
 
-
-
-
-/* create user collection
-        - userID
-        - firstname
-        - familyID
-        - pfpID
-        - email
-        - password
-        - authoToken
-        - regDate
-        - logged
+/* User Collection (Collection Name: users)
+    - _id
+    - FirstName
+    - LastName
+    - Username
+    - Password
+    - Email
+    - DateCreated
+    - LastLogin
+    - ProfilePic
+    - OnlineStatus (Datatype: int[1=on, 0=off])
+    - FamilyID
  */
+
+/* Family Collection (Collection Name: family)
+    - _id
+    - Nickname
+    - Size
+    - ProfilePic
+    - DateCreated
+    - CreatorID
+ */
+
+/* Post Collection (Collection Name: post)
+    - _id
+    - UserID
+    - DateCreated
+    - FilePath
+    - PostTitle
+    - PostContent
+    - Comments[]
+    - Upvote[]
+    - Downvote[]
+ */
+
+/* Comment Collection (Collection Name: comment)
+    - _id
+    - PostID
+    - UserID
+    - DateCreated
+    - FilePath
+    - CommentContent
+ */
+
+/* Voting Collection (Collection Name: vote)
+    - _id
+    - PostID
+    - UserID
+    - Vote (Datatype: int[1=up, 0=down])
+ */
+
 let userCollection = db.get('users');
-
-// Creating User
-// var temp_user = {
-//     id: "1",
-//     name: {
-//         first: "John",
-//         last: "Doe"},
-//     family_id: "1"
-// };
-// userCollection.insert(temp_user);
-
-// Finding User
-userCollection.find({ id: '1' }, function (err, temp_user) {
-    if (err) {
-        console.log("Temp User Not Found");
-    }
-    else {
-        console.log('Temp User Found');
-        console.log(temp_user);
-    }
-});
-
-
-/* create family collection
-        - familyID
-        - nickname
-        - size
-        - pfpID
-        - userID
-        - regDate
- */
 let familyCollection = db.get('family');
-
-
-
-/* create post collection
-        - postID
-        - userID
-        - filepath
-        - content
-        - upvote
-        - downvote
- */
 let postCollection = db.get('post');
-
-
-
-/* create comment collection
-        - commentID
-        - postID
-        - userID
-        - data
- */
-let commentsCollection = db.get('comment');
-
-
-
-/* create voting collection
-        - postID
-        - userID
-        - up/down
- */
-let votingCollection = db.get('voting');
+let commentCollection = db.get('comment');
+let voteCollection = db.get('vote');
 
 module.exports = router;
