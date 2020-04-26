@@ -45,7 +45,6 @@ const
     - PostID
     - UserID
     - DateCreated
-    - FilePath
     - CommentContent
  */
 

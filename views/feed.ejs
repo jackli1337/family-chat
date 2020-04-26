@@ -28,73 +28,114 @@
 
 <body>
 	<%- include('partials/nav'); %>
-	<main>
-		<div class="feed-main">
-			<div class="create-post">
-
-				<div class="create-post-header">Create Post</div>
-
-				<form id="user-form" method="post" action="/create-post" enctype="multipart/form-data">
-					<textarea name="userpost-txt" form="user-form" class="create-post-txt" placeholder="What would you like to post?"></textarea>
-					<input type="file" id="file" name="file">
-					<button type="submit" class="create-post-btn">Post</button>
-				</form>
-
-			</div>
-
-			<div class="post">
-				<div class="post-top">
-					<div class="post-pfp">
-						<img src="/img/Profile%20Picture.png">
-					</div>
-
-					<div class="post-creation">
-						<div class="post-name">John Doe</div>
-						<div class="post-date">March 2nd, 2020</div>
-					</div>
-				</div>
-
-				<div class="post-body">
-					<img src="/img/Profile%20Picture.png">
-				</div>
-
-				<div class="post-ratings">
-
-					<div class="rate-div">
-						<button><i class="far fa-thumbs-up"></i></button>
-						<h1>32</h1>
-					</div>
-
-					<div class="rate-div">
-						<button><i class="far fa-thumbs-down"></i></button>
-						<h1>4</h1>
-					</div>
-					<div class="rate-div">
-						<!-- If post is an image, render button -->
-						<button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
-					</div>
-					<div class="rate-div">
-						<button><i class="fas fa-share"></i></button>
-					</div>
-
-				</div>
-
-				<div class="comment-div">
-					<label>
-						<textarea class="post-comment" placeholder="Add a comment..."></textarea>
-					</label>
-
-					<input type="file" accept="image/png, image/jpeg">
-					<button class="post-send-btn">Comment</button>
-				</div>
-
+	<div class="social">
+		<div id="feedCreate">
+			<h1>New Post</h1>
+			<div id="form-post">
+				<input type="text" id="fp-title" name="postTitle" placeholder="Post Title" />
+				<textarea id="fp-content" class="create-post-txt" wrap="hard" placeholder="Post Content"></textarea>
+				<input type="file" id="fp-file" name="file" />
+				<input type="submit" id="spost" class="create-post-btn" onsubmit="return false;" value="post" />
 			</div>
 		</div>
+	</div>
+	<main>
+		</div>
+		<div id="feedView">
+
+				<% for(var data of items) { %>
+			<div class="post" id="<%= data._id%>">
+				<div class="content-section">
+					<h1 id="postTitle<%= data._id%>"><%= data.content.title%></h1>
+					<div class="post-author">
+						<div class="post-pfp">
+							<img src="/img/Profile%20Picture.png">
+						</div>
+
+						<div class="post-creation">
+							<a class="post-name"> <%= data.user_id%></a>
+							<a class="post-date">April 11th, 2020</a>
+						</div>
+					</div>
+
+					<div class="post-body">
+						<p id="postContent<%= data._id%>"><%= data.content.post%></p>
+						<img src="<%= data.filepath%>">
+					</div>
+
+					<div class="post-tools">
+						<button><i class="far fa-thumbs-up"></i> <%= data.upvote%></button>
+						<button><i class="far fa-thumbs-down"></i> <%= data.downvote%></button>
+						<!-- If post is an image, render button -->
+						<button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
+						<button><i class="fas fa-share"></i></button>
+					</div>
+				</div>
+				<div class="comment-section">
+					<div class="comment-history">
+						<div>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+								incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+								exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+								irure
+								dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+								pariatur.
+								Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+								mollit anim id est laborum.
+							</p>
+
+							<div class="post-author">
+								<div class="post-creation">
+									<button><i class="far fa-thumbs-up"></i> </button>
+									<button><i class="far fa-thumbs-down"></i> </button>
+									<h5 class="post-name">Jane Doe</h5>
+									<h5 class="post-date">April 11th, 2020</h5>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="post-comments">
+						<textarea id="pc-comment" class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
+						<input class="commentsubmit8888" id="c<%= data._id%>" type="submit" onsubmit="comment(this.id)"
+							value="comment" />
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+		</div>
 	</main>
-    <script src="/js/index.js"></script>
+	<script src="/js/index.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="/siofu/client.js"></script>
 	<script>
 		var socket = io.connect();
+	</script>
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function () {
+
+			// Initialize instances:
+			var socket = io.connect();
+			var siofu = new SocketIOFileUpload(socket);
+
+			// Configure the three ways that SocketIOFileUpload can read files:
+			siofu.listenOnInput(document.getElementById("fp-file"));
+			// siofu.listenOnSubmit(document.getElementById('spost'), document.getElementById('fp-file'));
+			// Do something on upload progress:
+			siofu.addEventListener("progress", function (event) {
+				var percent = event.bytesLoaded / event.file.size * 100;
+				console.log("File is", percent.toFixed(2), "percent loaded");
+			});
+
+			// Do something when a file is uploaded:
+			siofu.addEventListener("complete", function (event) {
+				console.log(event.success);
+				console.log(event.file);
+			});
+
+		}, false);
 	</script>
 </body>
 
