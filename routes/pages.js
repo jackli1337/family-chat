@@ -13,7 +13,7 @@ const user = new User();
 // Login/Registration Portal
 router.get('/', function (req, res) {
     let user = req.session.user;
-    if(user) {
+    if (user) {
         res.redirect('/feed');
     }
     res.render('index');
@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
 // Login Request
 router.post('/login', function (req, res) {
     user.login(req.body.username.toLowerCase(), req.body.password, function (result) {
-        if(result) {
+        if (result) {
             req.session.user = result;
             res.redirect('/feed');
         }
@@ -45,8 +45,8 @@ router.post('/register', function (req, res) {
     console.log(`==============USER INPUT==============`);
     console.log(userInput);
 
-    user.create(userInput, function(lastID){
-        if(lastID) {
+    user.create(userInput, function (lastID) {
+        if (lastID) {
             user.find(lastID, function (result) {
                 req.session.user = result;
                 res.redirect('/feed');
@@ -61,10 +61,10 @@ router.post('/register', function (req, res) {
 // Logout Request
 router.get('/logout', (req, res, next) => {
     let user = req.session.user;
-    if(user) {
-        req.session.destroy(function() {
+    if (user) {
+        req.session.destroy(function () {
             const userCollection = db.get('users');
-            userCollection.update({Username: user.Username}, {$set:{'OnlineStatus': 0}});
+            userCollection.update({ Username: user.Username }, { $set: { 'OnlineStatus': 0 } });
             res.redirect('/');
         });
     }
@@ -73,8 +73,13 @@ router.get('/logout', (req, res, next) => {
 // Feed
 router.get('/feed', function (req, res) {
     let user = req.session.user;
-    if(user) {
-        res.render('feed');
+    if (user) {
+        let postCollection = db.get('post');
+        postCollection.find({}, function (err, docs) {
+            if (err) throw err;
+            res.render('feed', { user: user, items: docs });
+
+        });
     }
     else {
         res.redirect('/');
@@ -84,8 +89,8 @@ router.get('/feed', function (req, res) {
 // Messages
 router.get('/messages', function (req, res) {
     let user = req.session.user;
-    if(user) {
-        res.render('messages');
+    if (user) {
+        res.render('messages', { user: user });
     }
     else {
         res.redirect('/');
@@ -95,8 +100,8 @@ router.get('/messages', function (req, res) {
 // Profile
 router.get('/profile', function (req, res) {
     let user = req.session.user;
-    if(user) {
-        res.render('profile');
+    if (user) {
+        res.render('profile', { user: user });
     }
     else {
         res.redirect('/');
@@ -106,8 +111,8 @@ router.get('/profile', function (req, res) {
 // Family
 router.get('/family', function (req, res) {
     let user = req.session.user;
-    if(user) {
-        res.render('family');
+    if (user) {
+        res.render('family', { user: user });
     }
     else {
         res.redirect('/');
