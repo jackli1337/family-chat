@@ -48,21 +48,29 @@
             </div>
             <form id="signup-form" class="signup" action="/register" method="post">
                 <label>Start or join a family circle today!</label>
-                <input class="signup-field" id="signup-firstname" type="text" name="firstname" placeholder="Enter your first name" required>
-                <input class="signup-field" id="signup-lastname" type="text" name="lastname" placeholder="Enter your last name" required>
-                <input class="signup-field" id="signup-username" type="text" name="username" placeholder="Enter your username" pattern=".{,12}" title="12 characters maximum!" required>
-                <input class="signup-field" id="signup-email" type="email" name="email" placeholder="Enter your email" required>
-                <input class="signup-field" id="signup-password" type="password" name="password" placeholder="Enter your desired password" required>
-                <input class="signup-field" id="signup-reenter-password" type="password" name="reenter-password" placeholder="Re-enter your desired password" required>
+                <input class="signup-field" id="signup-firstname" type="text" name="firstname"
+                    placeholder="Enter your first name" required>
+                <input class="signup-field" id="signup-lastname" type="text" name="lastname"
+                    placeholder="Enter your last name" required>
+                <input class="signup-field" id="signup-username" type="text" name="username"
+                    placeholder="Enter your username" pattern=".{,12}" title="12 characters maximum!" required>
+                <input class="signup-field" id="signup-email" type="email" name="email" placeholder="Enter your email"
+                    required>
+                <input class="signup-field" id="signup-password" type="password" name="password"
+                    placeholder="Enter your desired password" required>
+                <input class="signup-field" id="signup-reenter-password" type="password" name="reenter-password"
+                    placeholder="Re-enter your desired password" required>
                 <input class="signup-submit" type="submit" value="Join">
-                <input class="button" value="I already have an account." onclick="swapPortal('login'); return false">
+                <div class="button" onclick="swapPortal('signup')">I have an account</div>
             </form>
             <form id="signin-form" class="login hidden" action="/login" method="post">
                 <label>Welcome back to the family!</label>
-                <input class="signin-field" id="signin-username" type="text" name="username" placeholder="Enter your username">
-                <input class="signin-field" id="signin-password" type="password" name="password" placeholder="Enter your password">
+                <input class="signin-field" id="signin-username" type="text" name="username"
+                    placeholder="Enter your username">
+                <input class="signin-field" id="signin-password" type="password" name="password"
+                    placeholder="Enter your password">
                 <input class="signin-submit" type="submit" value="Login">
-                <input class="button" value="I don't have an account." onclick="swapPortal('login'); return false">
+                <div class="button" onclick="swapPortal('login')">I don't have an account</div>
             </form>
             <footer>
                 <ol>
@@ -76,6 +84,19 @@
             <div class="canted"></div>
         </div>
     </main>
+    <script>
+        function swapPortal(page) {
+            if (page === `login`) {
+                document.getElementById(`signin-form`).classList.add(`hidden`);
+                document.getElementById(`signup-form`).classList.remove(`hidden`);
+            }
+            else {
+                document.getElementById(`signin-form`).classList.remove(`hidden`);
+                document.getElementById(`signup-form`).classList.add(`hidden`);
+            }
+            return false;
+        }
+    </script>
 </body>
 
 </html>

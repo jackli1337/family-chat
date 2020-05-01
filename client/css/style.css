@@ -793,16 +793,15 @@ label {
     border-radius: 25px;
 }
 
-.portal input[type="submit"], .portal .button {
+.portal .button {
     width: fit-content;
     font-weight: 800;
+    padding: 8px 15px;
+    font-size: 14px;
+
     cursor: pointer;
     color: var(--content0);
     background-color: var(--content1);
-}
-
-.portal input[type="submit"]:last-of-type {
-    margin-top: 50px;
 }
 
 .canted {
@@ -1061,7 +1060,7 @@ input[type="file"] {
 }
 
 button { cursor: pointer; }
-button:hover, input[type="submit"]:hover {
+button:hover, input[type="submit"]:hover, .portal .button:hover {
     color: var(--content1);
     background-color: var(--content3);
     transition: color .4s, background-color .3s;

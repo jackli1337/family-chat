@@ -43,7 +43,7 @@
 		</div>
 		<div id="feedView">
 
-				<% for(var data of items) { %>
+			<% for(var data of items) { %>
 			<div class="post" id="<%= data._id%>">
 				<div class="content-section">
 					<h1 id="postTitle<%= data._id%>"><%= data.content.title%></h1>
@@ -54,7 +54,7 @@
 
 						<div class="post-creation">
 							<a class="post-name"> <%= data.user_id%></a>
-							<a class="post-date">April 11th, 2020</a>
+							<a class="post-date"> <%= data.date%></a>
 						</div>
 					</div>
 
@@ -72,34 +72,28 @@
 					</div>
 				</div>
 				<div class="comment-section">
-					<div class="comment-history">
+					<div class="comment-history" id="comment-history<%= data._id%>">
+						<% for(var data2 of data.comments) { %>
 						<div>
 							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-								incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-								exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-								irure
-								dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-								pariatur.
-								Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-								mollit anim id est laborum.
+								<%= data2.comment%>
 							</p>
 
 							<div class="post-author">
 								<div class="post-creation">
 									<button><i class="far fa-thumbs-up"></i> </button>
 									<button><i class="far fa-thumbs-down"></i> </button>
-									<h5 class="post-name">Jane Doe</h5>
-									<h5 class="post-date">April 11th, 2020</h5>
+									<h5 class="post-name"><%= data2.user_id%></h5>
+									<h5 class="post-date"><%= data2.date%></h5>
 								</div>
 							</div>
 						</div>
+						<% } %>
 
 					</div>
 					<div class="post-comments">
-						<textarea id="pc-comment" class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
-						<input class="commentsubmit8888" id="c<%= data._id%>" type="submit" onsubmit="comment(this.id)"
-							value="comment" />
+						<textarea id="pc-comment<%= data._id%>" class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
+						<input class="scomment" id="c<%= data._id%>" type="submit" value="comment" />
 					</div>
 				</div>
 			</div>
