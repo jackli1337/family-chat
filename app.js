@@ -21,7 +21,7 @@ const
     app = require('express')(),
     server = require('http').Server(app),
     io = require('socket.io')(server);
-    port = 8000;
+port = 8000;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // <!--Body Parser-->
@@ -92,18 +92,21 @@ io.on('connection', (sock) => {
     // listens for new post
     sock.on(`spost`, (data) => {
         // saves new post to database
-        let postCollection = db.get('post');
-        let newPost = {
-            user_id: 1,
-            filepath: uploader.dir,
-            content: {
-                title: data.title,
-                post: data.content
-            },
-            comments: [],
-            upvote: [],
-            downvote: []
-        };
+        let
+            postCollection = db.get('post'),
+            curDate = new Date(),
+            newPost = {
+                user_id: 1,
+                filepath: uploader.dir,
+                content: {
+                    title: data.title,
+                    post: data.content
+                },
+                comments: [],
+                upvote: [],
+                downvote: [],
+                date: curDate
+            };
         postCollection.insert(newPost, function (err, postInserted) {
             io.sockets.emit(`spost`, postInserted);
         });
@@ -113,17 +116,33 @@ io.on('connection', (sock) => {
 
     /* ----- REPLICATE (( SEE INDEX.JS FOR MORE ))----- */
     // listens for new comment
-    // sock.on(`scomment`, (data) => {
-    //
-    //     let postCollection = db.get('post');
-    //     postCollection.find({ _id: data.post_id }, function (err, post) {
-    //         if (err) { console.log("Post not found"); }
-    //         else {
-    //             post.comments.push(data.content);
-    //             io.sockets.emit(`scomment`, post);
-    //         }
-    //     });
-    // });
+    sock.on(`scomment`, (data) => {
+        console.info(data);
+        let
+            postCollection = db.get('post'),
+            curDate = new Date(),
+            newComment = {
+                parent: data.post_id,
+                user_id: data.content.user_id,
+                comment: data.content.comment,
+                // file: data.content.file,
+                date: curDate
+            };
+        postCollection.update(
+            { _id: data.post_id },
+            {
+                // adding comment to associated post
+                $push: {
+                    comments: newComment
+                }
+            },
+            function (err, post) {
+                if (err) { console.log("Post not found"); }
+                else {
+                    io.sockets.emit(`scomment`, newComment);
+                }
+            });
+    });
 });
 
 

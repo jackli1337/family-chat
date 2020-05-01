@@ -29,25 +29,8 @@ window.onload = function viaWebSocket() {
         fp_file.value = ``;
     };
 
-    // // ===== Submit a Comment ===== //
-    // this.document.getElementById(`scomment`).onclick = () => {
-    //     let
-    //         pc_comment = this.document.getElementById(`pc-comment`),
-    //         pc_file = this.document.getElementById(`pc-file`);
-    //
-    //     sock.emit(`scomment`, {
-    //         associated: this.comment(),
-    //         content: {
-    //             userID: 1,
-    //             comment: pc_comment.value,
-    //             file: pc_file.vlaue
-    //         }
-    //     });
-    //
-    //     // resets the values in the form
-    //     pc_comment.value = ``;
-    //     pc_file.value = ``;
-    // };
+    // ===== Submit a Comment ===== //
+    this.updateCommentListeners(`class`, sock);
 
     /* ===== FEEL FREE TO MODIFY LINES 40 - 68 ===== */
     // // ===== Submit an Upvote ===== //
@@ -82,10 +65,11 @@ window.onload = function viaWebSocket() {
     // ===== Listener ===== //
     sock.on(`spost`, (data) => {
         renderPost(data);
+        this.updateCommentListeners(`id`, sock, data._id);
     });
-    // sock.on(`scomment`, (data) => {
-    //     renderComment(data);
-    // });
+    sock.on(`scomment`, (data) => {
+        renderComment(data);
+    });
 };
 
 
@@ -96,6 +80,7 @@ function renderPost(data) {
     // injects template with non-user generated content
     // *** need to create a function that checks for valid file name (done in App.js?)
     console.info(data);
+    let newDate = getDate(data.date);
     let inject = `
         <div class="post" id="${data._id.toString()}">
             <div class="content-section">
@@ -107,7 +92,7 @@ function renderPost(data) {
 
                     <div class="post-creation">
                         <a class="post-name"> ${data.user_id}</a>
-                        <a class="post-date">April 11th, 2020</a>
+                        <a class="post-date">${newDate}</a>
                     </div>
                 </div>
 
@@ -125,13 +110,13 @@ function renderPost(data) {
                 </div>
             </div>
             <div class="comment-section">
-                <div class="comment-history">
+                <div class="comment-history" id="comment-history${data._id.toString()}">
                     <!-- insert comments here -->
                 </div>
                 <div class="post-comments">
-                    <textarea id="pc-comment" class="comment" wrap="hard"
+                    <textarea id="pc-comment${data._id.toString()}" class="comment" wrap="hard"
                         placeholder="Add a comment..."></textarea>
-                    <input class="commentsubmit8888" id="c${data._id.toString()}" type="submit" onsubmit="comment(this.id)" value="comment" />
+                    <input class="scomment" id="c${data._id.toString()}" type="submit" value="comment" />
                 </div>
             </div>
         </div>
@@ -145,12 +130,35 @@ function renderPost(data) {
 // ===== Render Image ===== //
 function renderImage(data) {
     let string = `<img src="${data}"/>`
-    if(!data.includes(`.JPG`) ) { return ``; }
+    if (!data.includes(`.JPG`)) { return ``; }
     return string;
 }
 
 // ===== Render Comment ===== //
 function renderComment(data) {
+
+    console.log(data);
+
+    let newDate = getDate(data.date);
+    let inject = `
+    <div>
+        <p>
+            ${data.comment}
+        </p>
+
+        <div class="post-author">
+            <div class="post-creation">
+                <button><i class="far fa-thumbs-up"></i> </button>
+                <button><i class="far fa-thumbs-down"></i> </button>
+                <h5 class="post-name">${data.user_id}</h5>
+                <h5 class="post-date">${newDate}</h5>
+            </div>
+        </div>
+    </div>`;
+
+    let parent = document.getElementById(`comment-history${data.parent}`);
+    parent.innerHTML += inject;
+
 
 }
 
@@ -159,10 +167,60 @@ function download(link) {
     window.open(link);
 }
 
-// ===== GetPost ===== //
+// ===== Get Post ===== //
 function comment(str) {
     let string = str.slice(1);
     console.log(string);
+}
+
+// ===== Get Date ===== //
+function getDate(input) {
+    let curDate = new Date(input);
+    return `${curDate.getFullYear()}-${`0${curDate.getMonth()}`.slice(-2)}-${`0${curDate.getDate()}`.slice(-2)} ${`0${curDate.getHours()}`.slice(-2)}:${`0${curDate.getMinutes()}`.slice(-2)}:${`0${curDate.getSeconds()}`.slice(-2)}`;
+}
+
+// ===== Update Comment Listener ===== //
+function updateCommentListeners(type, sock, input) {
+    if (type === `class`) {
+
+        let scomment = this.document.getElementsByClassName(`scomment`);
+        Array.from(scomment).forEach(elem => {
+            elem.onclick = (event) => {
+                let
+                    id = event.target.id.slice(1),
+                    pc_comment = this.document.getElementById(`pc-comment${id}`);
+
+                sock.emit(`scomment`, {
+                    post_id: id,
+                    content: {
+                        user_id: 1,
+                        comment: pc_comment.value,
+                    }
+                });
+
+                // resets the values in the form
+                pc_comment.value = ``;
+            }
+        });
+    }
+    else if (type === `id`) {
+        this.document.getElementById(`c${input}`).onclick = (event) => {
+            let pc_comment = this.document.getElementById(`pc-comment${input}`);
+
+            this.console.log(pc_comment.value);
+            sock.emit(`scomment`, {
+                post_id: input,
+                content: {
+                    user_id: 1,
+                    comment: pc_comment.value,
+                }
+            });
+
+            // resets the values in the form
+            pc_comment.value = ``;
+        }
+    }
+
 }
 
 // ===== Swap Portal ===== //

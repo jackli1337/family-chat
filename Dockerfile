@@ -14,9 +14,7 @@ RUN apt-get install -y nodejs
 
 COPY . .
 
-RUN mv ./node_modules ./node_modules.tmp \
-  && mv ./node_modules.tmp ./node_modules \
-  && npm install
+RUN npm install
 
 EXPOSE 8000
 
