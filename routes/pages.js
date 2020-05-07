@@ -107,7 +107,7 @@ router.get('/messages', function (req, res) {
 
         let chatCollection = db.get('chat');
 
-        chatCollection.find({ users: [ user.Username, 'jackli123']}, function (err) {
+        chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err) {
             if(err){
                 console.log("Chat doesn't exist");
             } else {
