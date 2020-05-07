@@ -382,39 +382,20 @@
         <div class="messages-chat-box">
             <div class="chat-box-container">
                 <div class="chat-box-header">
-                    <h3>John Doe</h3>
+                    <h3><%= chatBuddy%></h3>
                     <a href="#"><i class="fas fa-bars"></i></a>
                 </div>
+
                 <div class="chat-box-messages">
-                    <div class="messages-container">
-                        <div class="message-left-wrapper">
-                            <div class="message-left">
-                                <div class="message-pfp">
-                                    <img src="/img/Profile%20Picture.png" alt="pfp">
-                                </div>
-                                <div class="message-info">
-                                    <a class="message-from">John Doe</a>
-                                    <div class="message-message">
-                                        <span>Hello, I'm John!</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="message-right-wrapper">
-                            <div class="message-right">
-                                <div class="message-info">
-                                    <a class="message-from">John Doe</a>
-                                    <div class="message-message">
-                                        <span>Hello, I'm also John!</span>
-                                    </div>
-                                </div>
-                                <div class="message-pfp">
-                                    <img src="/img/Profile%20Picture.png" alt="pfp">
-                                </div>
-                            </div>
-                        </div>
+                    <div id="messages-container" class="messages-container">
+                        <ul>
+                            <% for(var msgs of chatArray) { %>
+                                <li><%= msgs.sender%>:<%= msgs.message%></li>
+                            <% } %>
+                        </ul>
                     </div>
                 </div>
+
                 <div class="chat-box-text">
                     <div class="chat-box-icons">
                         <div class="icons-left">
@@ -428,10 +409,12 @@
                     </div>
                     <div class="message-input-container">
                         <label for="message-input"></label>
-                        <textarea id="message-input" placeholder="Send a message, be nice!" name="message-input"></textarea>
+                        <textarea id="message-input" placeholder="Send a message, be nice!" name="message-input" form="send-message"></textarea>
                     </div>
                     <div class="message-send-button">
-                        <a href="#"><i class="fas fa-paper-plane"></i></a>
+                        <form id="send-message">
+                            <input type="submit" value="Enter">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -439,5 +422,30 @@
     </main>
     <script src="/js/index.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="jquery-3.4.1.min.js"></script>
+
+    <script>
+        $(document).ready(function (){
+            let socket = io.connect('http://localhost:7000');
+
+            let $messageForm = $('#send-message');
+            let $messageBox = $('#message-input');
+            let $chat = $('#messages-container');
+
+
+            $messageForm.onsubmit(function (e) {
+                e.preventDefault();
+
+                socket.emit('send message', $messageBox.value());
+                $messageBox.value('');
+            });
+
+
+            socket.on('new message', function (data) {
+                $chat.append(data + "<br/>");
+            });
+
+        });
+    </script>
 </body>
 </html>

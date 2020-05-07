@@ -72,7 +72,7 @@ app.use((err, req, res, next) => {
 
 // <!--Socket-->
 // On Connection To Server
-io.on('connection', (sock) => {
+io.on('connection',  (sock) => {
     console.log(sock.id + " has connected!");
 
     var uploader = new SocketIOFileUpload();
@@ -87,6 +87,11 @@ io.on('connection', (sock) => {
     // Error handler:
     uploader.on("error", function (event) {
         console.log("Error from uploader", event);
+    });
+
+    //listen for new message
+    sock.on('send message', function (data) {
+        io.sockets.emit('new message', data);
     });
 
     // listens for new post

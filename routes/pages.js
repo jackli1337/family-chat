@@ -34,6 +34,9 @@ router.post('/login', function (req, res) {
 
 // Register Request
 router.post('/register', function (req, res) {
+
+    let userCollection = db.get('users');
+
     let userInput = {
         FirstName: req.body.firstname,
         LastName: req.body.lastname,
@@ -41,6 +44,7 @@ router.post('/register', function (req, res) {
         Password: req.body.password,
         Email: req.body.email
     };
+
 
     console.log(`==============USER INPUT==============`);
     console.log(userInput);
@@ -51,6 +55,12 @@ router.post('/register', function (req, res) {
                 req.session.user = result;
                 res.redirect('/feed');
             });
+
+            userCollection.find({}).then((docs) => {
+                console.log("New user added...New userCollection:");
+                console.log(docs);
+            });
+
         }
         else {
             res.send('Error creating a new user...username or email already exists!');
@@ -89,8 +99,29 @@ router.get('/feed', function (req, res) {
 // Messages
 router.get('/messages', function (req, res) {
     let user = req.session.user;
+
+    let chatArray = [];
+
+    let chatBuddy = 'jackli123';
+
     if (user) {
-        res.render('messages', { user: user });
+
+        let chatCollection = db.get('chat');
+
+        chatCollection.find({ users: ['sliu57', 'jackli123']}, function (err, privatechat) {
+            if(err){
+                console.log("Chat doesn't exist");
+            } else {
+
+
+                chatCollection.find({ "messages": { $size: 3} }, function (err, messages) {
+                    chatArray.push(messages);
+                    console.log(chatArray);
+                } )
+            }
+        });
+
+        res.render('messages', { user: user, chatArray, chatBuddy });
     }
     else {
         res.redirect('/');
