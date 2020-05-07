@@ -101,19 +101,22 @@ router.get('/messages', function (req, res) {
     let user = req.session.user;
 
     let chatArray = [];
-
-    let chatBuddy = 'jackli123';
+    let chatBuddy = 'Jack Li';
 
     if (user) {
 
         let chatCollection = db.get('chat');
 
-        chatCollection.find({ users: ['sliu57', 'jackli123']}, function (err, privatechat) {
+        chatCollection.find({ users: [ user.Username, 'jackli123']}, function (err) {
             if(err){
                 console.log("Chat doesn't exist");
             } else {
 
-                chatCollection.find({ "messages": { $size: 3} }, function (err, messages) {
+                chatCollection.find({ messages: { $size: 3} }, function (err, messages) {
+                    if(err) {
+                        console.log("Could not render chat!")
+                        console.log(err);
+                    }
                     chatArray.push(messages);
                     console.log("The temp chat is:");
                     console.log(chatArray);

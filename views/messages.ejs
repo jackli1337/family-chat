@@ -432,19 +432,39 @@
             let $messageForm = $('#send-message');
             let $messageBox = $('#message-input');
             let $chat = $('#messages-container');
+            let $user = $('#username');
 
 
             $messageForm.submit(function (e) {
                 e.preventDefault();
 
-                socket.emit('send message', $messageBox.val());
+                socket.emit('send message',  {
+                    username: 'sliu57',
+                    message: $messageBox.val()
+                });
                 $messageBox.val('');
             });
 
-
             socket.on('new message', function (data) {
+                console.log("This is data" +data);
                 $chat.append(data + "<br/>");
             });
+
+            // socket.on('new message', function (data) {
+            //     console.log(data);
+            //
+            //     if(data.length){
+            //         for(let x; x < data.length; x++){
+            //             let message = document.createElement('div');
+            //             message.setAttribute('class', 'chat-message');
+            //             message.textContent = data[x].username + ": " + data[x].message;
+            //             $chat.append(message + "<br/>");
+            //             $chat.insertBefore(message, $chat.firstChild);
+            //         }
+            //     }
+            // });
+
+
 
         });
     </script>

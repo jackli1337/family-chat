@@ -73,6 +73,8 @@ app.use((err, req, res, next) => {
 // <!--Socket-->
 // On Connection To Server
 io.on('connection',  (sock) => {
+
+
     console.log(sock.id + " has connected!");
 
     var uploader = new SocketIOFileUpload();
@@ -89,10 +91,57 @@ io.on('connection',  (sock) => {
         console.log("Error from uploader", event);
     });
 
+    let chatArray = [];
+    let chatCollection = db.get('chat');
+    //function to send status
+    sendStatus = function(s) {
+        io.sockets.emit('status', s);
+    }
+
+    //Get chats from mongo collection
+    chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err) {
+        if(err){
+            console.log("Chat between these 2 users doesn't exist");
+        } else {
+
+            chatCollection.find({ messages: { $elemMatch: { timestamp: Date.now() } } }, function (err, res) {
+                if (err) throw err;
+
+                //Emit the messages
+                console.log(res);
+                io.sockets.emit('new message', res);
+            });
+
+        }
+    });
+
+    //handling input events
     //listen for new message
     sock.on('send message', function (data) {
-        io.sockets.emit('new message', data);
+        let username = data.username;
+        let message = data.message;
+
+        //Check for name and message
+        if(username.length > 0 && message.length > 0) {
+
+            //insert message
+            var msg = {
+                message: data.message,
+                sender: data.username,
+                timestamp: Date.now()
+            };
+
+            chatCollection.update({chat_id: '1'},  { $push: { messages: msg} }, function () {
+                console.log("Added a new message")
+                io.sockets.emit('new message', data);
+
+            });
+
+        }
+
+
     });
+
 
     // listens for new post
     sock.on(`spost`, (data) => {
