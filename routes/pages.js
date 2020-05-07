@@ -113,9 +113,9 @@ router.get('/messages', function (req, res) {
                 console.log("Chat doesn't exist");
             } else {
 
-
                 chatCollection.find({ "messages": { $size: 3} }, function (err, messages) {
                     chatArray.push(messages);
+                    console.log("The temp chat is:");
                     console.log(chatArray);
                 } )
             }

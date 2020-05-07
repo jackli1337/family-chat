@@ -42,8 +42,8 @@
                                 <img src="/img/Profile%20Picture.png" alt="pfp">
                             </div>
                             <div class="contact-name">
-                                <h5>John Doe</h5>
-                                <a>What time are you going to gym?</a>
+                                <h5><%= chatBuddy%></h5>
+                                <a>Sure man. Of course1</a>
                             </div>
                         </div>
                         <div class="contact-right">
@@ -386,7 +386,7 @@
                     <a href="#"><i class="fas fa-bars"></i></a>
                 </div>
 
-                <div class="chat-box-messages">
+                <div id="chat-box-messages" class="chat-box-messages">
                     <div id="messages-container" class="messages-container">
                         <ul>
                             <% for(var msgs of chatArray) { %>
@@ -422,22 +422,23 @@
     </main>
     <script src="/js/index.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="jquery-3.4.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <script>
+
         $(document).ready(function (){
-            let socket = io.connect('http://localhost:7000');
+            let socket = io.connect();
 
             let $messageForm = $('#send-message');
             let $messageBox = $('#message-input');
             let $chat = $('#messages-container');
 
 
-            $messageForm.onsubmit(function (e) {
+            $messageForm.submit(function (e) {
                 e.preventDefault();
 
-                socket.emit('send message', $messageBox.value());
-                $messageBox.value('');
+                socket.emit('send message', $messageBox.val());
+                $messageBox.val('');
             });
 
 

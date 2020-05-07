@@ -404,6 +404,7 @@ nav {
 }
 
 .messages-container {
+    color: black;
     height: 100%;
     overflow: scroll;
 }
