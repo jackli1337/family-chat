@@ -64,8 +64,8 @@
 					</div>
 
 					<div class="post-tools">
-						<button><i class="far fa-thumbs-up"></i> <%= data.upvote%></button>
-						<button><i class="far fa-thumbs-down"></i> <%= data.downvote%></button>
+						<button onclick="vote(upvote, data._id,1)"><i class="far fa-thumbs-up"></i> <%= data.upvote%></button>
+						<button onclick="vote(downvote, data._id,1)"><i class="far fa-thumbs-down"></i> <%= data.downvote%></button>
 						<!-- If post is an image, render button -->
 						<button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
 						<button><i class="fas fa-share"></i></button>
@@ -130,6 +130,51 @@
 			});
 
 		}, false);
+		
+		
+			
+        function vote(choice,post_id,user_id){
+        
+        //Not sure how to pass user_id from ejs to js, just used placeholder (1)
+        //Doesn't use vote objects, just edits the contents of the arrays
+		//Find user_id within the downvote/upvote array of the user_id
+		
+		//Change HTML of Upvote/Downvote button to the size of each array
+            
+            var hasUpvoted = db.post.findOne({"_id": post_id},{upvotes: {$elemMatch: {user_id}}});
+            var hasDownvoted = db.post.findOne({"_id": post_id},{downvotes: {$elemMatch: {user_id}}})
+        
+        if(choice = 'upvote'){ 
+            if(hasUpvoted){
+            db.post.update({ _id: post_id }, { $pull: { upvotes: { user_id}}});
+            }
+            
+            else if(hasDownvoted){
+            db.post.update({ _id: post_id }, { $pull: { downvotes: { user_id}}});
+            db.post.update({ _id: post_id }, { $push: { upvotes: { user_id}}});
+            }
+            
+            else{
+            db.post.update({ _id: post_id }, { $push: { upvotes: { user_id}}});
+            }
+        }
+        
+        
+        else{
+            if(hasDownvoted){
+            db.post.update({ _id: post_id }, { $pull: { downvotes: { user_id}}});
+            }
+            
+            else if(hasUpvoted){
+            db.post.update({ _id: post_id }, { $pull: { upvotes: { user_id}}});
+            db.post.update({ _id: post_id }, { $push: { downvotes: { user_id}}});
+            }
+            
+            else{
+            db.post.update({ _id: post_id }, { $push: { downvotes: { user_id}}});
+            }
+        }
+        }
 	</script>
 </body>
 
