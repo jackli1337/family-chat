@@ -100,16 +100,18 @@ io.sockets.on('connection', (sock) => {
         // listens for new post
         sock.on(`spost`, (data) => {
             // saves new post to database
+            console.log("POSTING, THIS IS USER ID ================================================")
+            console.log(user._id);
             let
                 postCollection = db.get('post'),
                 curDate = new Date(),
                 newPost = {
                     user_id: user._id,
-                    fullname: `${user.FirstName} ${user.LastName}`,
+                    fullname: escapeHtml(`${user.FirstName} ${user.LastName}`),
                     filepath: uploader.dir,
                     content: {
-                        title: data.title,
-                        post: data.content
+                        title: escapeHtml(data.title),
+                        post: escapeHtml(data.content)
                     },
                     comments: [],
                     upvote: [],
@@ -131,7 +133,7 @@ io.sockets.on('connection', (sock) => {
                     parent: data.post_id,
                     user_id: user._id,
                     fullname: `${user.FirstName} ${user.LastName}`,
-                    comment: data.content.comment,
+                    comment: escapeHtml(data.content.comment),
                     // file: data.content.file,
                     date: curDate
                 };

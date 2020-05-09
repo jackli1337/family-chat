@@ -119,7 +119,8 @@ router.get('/profile', function (req, res) {
 router.get('/profile/:id', function (req, res) {
     let user = req.session.user;
     let userCollection = db.get('users');
-    
+    let postCollection = db.get('post');
+
     if (user) {
         let path = req['path'];
         let uri = path.split('/')[2];
@@ -132,23 +133,11 @@ router.get('/profile/:id', function (req, res) {
             }
 
             else {
-                console.info(result);
-                console.info(result[0]);
                 console.info(result[0]._id);
-                let postCollection = db.get('post');
-                postCollection.find({ user_id: result[0]._id }, function (err, docs) {
-
-                    // found self
-                    if (result.length && (result[0].Username === user.Username || uri === "")) {
-                        res.render('profile', { target: result[0], user: user, posts: docs });
-                    }
-
-                    // found others 
-                    else if (result.length !== 0) {
-                        // checking following
-                        res.render('profile', { target: result[0], user: user, posts: docs });
-                    }
-                    console.log(result)
+                postCollection.find({ user_id: result[0]._id.toString() }, function (err, docs) {
+                    console.log(" ========= result from postCollection find ============================================================================================================================================================================================================")
+                    console.info(docs);
+                    res.render('profile', { target: result[0], user: user, posts: docs });
                 });
             }
         });
