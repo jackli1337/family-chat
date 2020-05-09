@@ -1,20 +1,27 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--incomplete---><meta name="description" content="#">
-    <!--incomplete---><meta name="keywords" content="#">
+    <!--incomplete--->
+    <meta name="description" content="#">
+    <!--incomplete--->
+    <meta name="keywords" content="#">
 
 
     <meta property="og:title" content="Family Chat">
-    <!--incomplete---><meta property="og:description" content="#">
-    <!--incomplete---><meta property="og:image" content="#">
-    <!--incomplete---><meta property="og:url" content="#">
+    <!--incomplete--->
+    <meta property="og:description" content="#">
+    <!--incomplete--->
+    <meta property="og:image" content="#">
+    <!--incomplete--->
+    <meta property="og:url" content="#">
     <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+        integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
     <title>Family Chat</title>
 </head>
@@ -29,21 +36,30 @@
                 </div>
                 <div class="profile-info">
                     <div class="profile-name">
-                        <h3>John Doe</h3>
-                        <button class="follow-button">Follow</button>
-                        <button class="family-button" onclick="location.href='family'">View Family</button>
+                        <h3><%=target.FirstName + " " + target.LastName %></h3>
+
+
+                        <% if(target.Username === user.Username){ %>
+                        <button class="follow-button">Edit Profile</button>
+                        <%} else if(user.Following.includes(target._id)){ %>
+                        <button id="<%= target._id%>" class="follow-button">Unfollow</button>
+                        <%} else {%>
+                        <button id="<%= target._id%>" class="follow-button">Follow</button>
+                        <% } if(target.FamilyID.length !== 0 ){ %>
+                        <button class="family-button" onclick="location.href='<%=target.FamilyID %>'">View Family</button>
+                        <%} %>
                     </div>
                     <div class="profile-stats">
                         <div class="stories">
-                            <h3>32</h3>
-                            <h4>Stories</h4>
+                            <h3><%=posts.length %></h3>
+                            <h4>Posts</h4>
                         </div>
                         <div class="followers">
-                            <h3>732</h3>
+                            <h3><%=target.Followers.length %></h3>
                             <h4>Followers</h4>
                         </div>
                         <div class="following">
-                            <h3>543</h3>
+                            <h3><%=target.Following.length %></h3>
                             <h4>Following</h4>
                         </div>
                     </div>
@@ -51,7 +67,8 @@
             </div>
         </div>
     </main>
-    <script src="/js/index.js"></script>
+	<script src="/js/profile.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 </body>
+
 </html>

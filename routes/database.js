@@ -17,6 +17,8 @@ const
     - ProfilePic
     - OnlineStatus (Datatype: int[1=on, 0=off])
     - FamilyID
+    - Following
+    - Followers
  */
 
 /* Family Collection (Collection Name: family)
@@ -60,5 +62,15 @@ let familyCollection = db.get('family');
 let postCollection = db.get('post');
 let commentCollection = db.get('comment');
 let voteCollection = db.get('vote');
+
+// CLEAR DATABASE
+// userCollection.drop();
+// familyCollection.drop();
+// postCollection.drop();
+// commentCollection.drop();
+// voteCollection.drop();
+
+
+
 
 module.exports = router;

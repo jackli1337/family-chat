@@ -55,7 +55,9 @@ User.prototype = {
                         LastLogin: dateTime,
                         ProfilePic: ``,
                         OnlineStatus: '1',
-                        FamilyID: ``
+                        FamilyID: ``,
+                        Following: [],
+                        Followers: []
                     }
 
                     console.log(`==============CREATED USER==============`);
