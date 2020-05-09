@@ -389,14 +389,12 @@
                 <div id="chat-box-messages" class="chat-box-messages">
                     <div id="messages-container" class="messages-container">
                         <ul>
-                            <h1>TESTING outsitde for loop</h1>
-                            <% for(let x = 0; x < chatArray.length; x++) { %>
+                            <% for(var msgs of chatArray) { %>
 
-                            <h1>TEST2 inside for loop</h1>
                                 <li>
-                                    <%= chatArray[x].sender%> : <%= chatArray[x].message%>
-                                    <h1>test for inside li</h1>
-                                </li>  <h1>test btn li and br</h1> <br/>
+                                    <%= msgs[0].sender%> : <%= msgs[0].message%>
+                                </li>
+                                <br/>
 
                             <% } %>
                         </ul>
@@ -433,6 +431,8 @@
 
     <script>
 
+        const user = "<%=user.Username %>";
+
         $(document).ready(function (){
             let socket = io.connect();
 
@@ -446,7 +446,7 @@
                 e.preventDefault();
 
                 let object = {
-                    username: 'sliu57',
+                    username: user,
                     message: $messageBox.val()
                 };
 
@@ -455,9 +455,11 @@
             });
 
             socket.on('new message', function (data) {
-                console.log("The new message :" ,data);
-                $chat.append(data + "<br/>" + "<br/>");
+                console.log("New message sent back to client.");
+
+                $chat.append(data.userSent + ": " + data.msgToSend + "<br/>" + "<br/>");
             });
+
 
             // socket.on('new message', function (data) {
             //     console.log(data);

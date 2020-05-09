@@ -132,7 +132,11 @@ io.on('connection',  (sock) => {
             chatCollection.update({users: [ 'sliu57', 'jackli123']},  { $push: { messages: msg} }, function (err, data) {
                 console.log("Added a new message");
                 console.info("The data is: ", data);
-                io.sockets.emit('new message', data);
+
+                let sentmsg = msg.message;
+                let sentuser = msg.sender;
+
+                io.sockets.emit('new message', { msgToSend: sentmsg, userSent: sentuser, data } );
 
             });
 

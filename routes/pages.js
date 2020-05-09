@@ -101,7 +101,7 @@ router.get('/messages', function (req, res) {
     let user = req.session.user;
 
     let chatArray = [];
-    let chatBuddy = 'Jack Li';
+    let chatBuddy = 'Jack Li  ';
 
     if (user) {
 
@@ -115,7 +115,8 @@ router.get('/messages', function (req, res) {
 
                 chatArray = result[0].messages;
 
-                console.log("This is the chat between Jack and Steven:")
+                console.log("This is the chat between Jack and Steven:");
+
                 console.info(chatArray);
             }
         });
