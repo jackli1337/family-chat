@@ -4,6 +4,7 @@ const
     mongo = require('mongodb'),
     monk = require('monk'),
     db = monk('mongo:27017/familychat'),
+    escapeHtml = require('escape-html'),
     bcrypt = require('bcrypt');
 
 const userCollection = db.get('users');
@@ -25,7 +26,7 @@ User.prototype = {
 
     create: function (body, callback) {
         this.find(body.Username.toLowerCase(), function (user) {
-            if(user) {
+            if (user) {
                 callback(null);
             }
             else {
@@ -46,22 +47,24 @@ User.prototype = {
                     var dateTime = date + ' ' + time;
 
                     var created_user = {
-                        FirstName: data[0].toLowerCase(),
-                        LastName: data[1].toLowerCase(),
-                        Username: data[2].toLowerCase(),
-                        Password: data[3],
-                        Email: data[4].toLowerCase(),
+                        FirstName: escapeHtml(data[0].toLowerCase()),
+                        LastName: escapeHtml(data[1].toLowerCase()),
+                        Username: escapeHtml(data[2].toLowerCase()),
+                        Password: escapeHtml(data[3]),
+                        Email: escapeHtml(data[4].toLowerCase()),
                         DataCreated: dateTime,
                         LastLogin: dateTime,
                         ProfilePic: ``,
                         OnlineStatus: '1',
-                        FamilyID: ``
+                        FamilyID: ``,
+                        Following: [],
+                        Followers: []
                     }
 
                     console.log(`==============CREATED USER==============`);
                     console.log(created_user);
 
-                    userCollection.insert(created_user, function(err){
+                    userCollection.insert(created_user, function (err) {
                         if (err) throw err;
                         callback(created_user.Username);
                     });
@@ -81,7 +84,7 @@ User.prototype = {
                         var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
                         var dateTime = date + ' ' + time;
 
-                        userCollection.update({Username: username}, {$set:{'LastLogin': dateTime, 'OnlineStatus': 1}});
+                        userCollection.update({ Username: username }, { $set: { 'LastLogin': dateTime, 'OnlineStatus': 1 } });
                         callback(user);
                         return;
                     }

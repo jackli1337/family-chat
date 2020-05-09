@@ -91,7 +91,7 @@ function renderPost(data) {
                     </div>
 
                     <div class="post-creation">
-                        <a class="post-name"> ${data.user_id}</a>
+                        <a class="post-name"> ${data.fullname}</a>
                         <a class="post-date">${newDate}</a>
                     </div>
                 </div>
@@ -150,7 +150,7 @@ function renderComment(data) {
             <div class="post-creation">
                 <button><i class="far fa-thumbs-up"></i> </button>
                 <button><i class="far fa-thumbs-down"></i> </button>
-                <h5 class="post-name">${data.user_id}</h5>
+                <h5 class="post-name">${data.fullname}</h5>
                 <h5 class="post-date">${newDate}</h5>
             </div>
         </div>

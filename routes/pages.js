@@ -100,8 +100,48 @@ router.get('/messages', function (req, res) {
 // Profile
 router.get('/profile', function (req, res) {
     let user = req.session.user;
+
+    // get all posts by user
+    let postCollection = db.get('post');
+
     if (user) {
-        res.render('profile', { user: user });
+
+        postCollection.find({ user_id: user._id }, function (err, docs) {
+            res.render('profile', { target: user, user: user, posts: docs });
+        });
+    }
+    else {
+        res.redirect('/');
+    }
+});
+
+// Profile - URI
+router.get('/profile/:id', function (req, res) {
+    let user = req.session.user;
+    let userCollection = db.get('users');
+    let postCollection = db.get('post');
+
+    if (user) {
+        let path = req['path'];
+        let uri = path.split('/')[2];
+
+        userCollection.find({ Username: uri }, function (err, result) {
+
+            // user not found
+            if (!result[0]) {
+                res.redirect('/');
+            }
+
+            else {
+                console.info(result[0]._id);
+                postCollection.find({ user_id: result[0]._id.toString() }, function (err, docs) {
+                    console.log(" ========= result from postCollection find ============================================================================================================================================================================================================")
+                    console.info(docs);
+                    res.render('profile', { target: result[0], user: user, posts: docs });
+                });
+            }
+        });
+
     }
     else {
         res.redirect('/');
