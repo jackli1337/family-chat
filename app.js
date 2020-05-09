@@ -99,18 +99,14 @@ io.on('connection',  (sock) => {
     }
 
     //Get chats from mongo collection
-    chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err) {
+    chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err, res) {
         if(err){
             console.log("Chat between these 2 users doesn't exist");
         } else {
-
-            chatCollection.find({ messages: { $elemMatch: { timestamp: Date.now() } } }, function (err, res) {
-                if (err) throw err;
-
                 //Emit the messages
-                console.log(res);
-                io.sockets.emit('new message', res);
-            });
+                console.log(res[0].messages);
+                io.sockets.emit('new message', res[0].messages);
+
 
         }
     });
@@ -118,21 +114,24 @@ io.on('connection',  (sock) => {
     //handling input events
     //listen for new message
     sock.on('send message', function (data) {
+
+        let chatCollection = db.get('chat');
+
         let username = data.username;
         let message = data.message;
 
         //Check for name and message
-        if(username.length > 0 && message.length > 0) {
+        if(message.length > 0) {
 
             //insert message
             var msg = {
-                message: data.message,
-                sender: data.username,
-                timestamp: Date.now()
+                message: message,
+                sender: username,
             };
 
-            chatCollection.update({chat_id: '1'},  { $push: { messages: msg} }, function () {
-                console.log("Added a new message")
+            chatCollection.update({users: [ 'sliu57', 'jackli123']},  { $push: { messages: msg} }, function (err, data) {
+                console.log("Added a new message");
+                console.info("The data is: ", data);
                 io.sockets.emit('new message', data);
 
             });

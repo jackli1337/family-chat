@@ -100,23 +100,26 @@ let temp_chat = {
         {
             message: "hi",
             sender: 'sliu57',
-            timestamp: Date.now(),
         },
         {
             message: "What's up?",
             sender: 'jackli123',
-            timestamp: Date.now(),
         }
         ]
 
 };
 
+//chatCollection.insert(temp_chat);
+
 chatCollection.find({}).then((docs) => {
-    console.log("All chats");
-    console.log(docs);
+
+    //chatCollection.remove( { chat_id: '1'});
+
+     console.log("All chats");
+     console.info(docs);
 });
 
-//chatCollection.insert(temp_chat);
+
 
 
 module.exports = router;

@@ -107,24 +107,20 @@ router.get('/messages', function (req, res) {
 
         let chatCollection = db.get('chat');
 
-        chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err) {
+        chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err, result) {
             if(err){
                 console.log("Chat doesn't exist");
             } else {
+                console.info(result[0].messages);
 
-                chatCollection.find({ messages: { $size: 3} }, function (err, messages) {
-                    if(err) {
-                        console.log("Could not render chat!")
-                        console.log(err);
-                    }
-                    chatArray.push(messages);
-                    console.log("The temp chat is:");
-                    console.log(chatArray);
-                } )
+                chatArray = result[0].messages;
+
+                console.log("This is the chat between Jack and Steven:")
+                console.info(chatArray);
             }
         });
 
-        res.render('messages', { user: user, chatArray, chatBuddy });
+        res.render('messages', { user: user, chatArray: chatArray, chatBuddy: chatBuddy });
     }
     else {
         res.redirect('/');
