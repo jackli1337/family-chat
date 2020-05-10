@@ -1,0 +1,35 @@
+<nav>
+    <div class="nav-logo-container">
+        <a href="/feed">
+            <h2>Family Chat</h2>
+        </a>
+    </div>
+    <div class="nav-links-container">
+        <a href="/feed">
+            <h3>FEED</h3>
+        </a>
+        <a href="/family">
+            <h3>FAMILY</h3>
+        </a>
+    </div>
+    <div class="nav-search-container">
+        <div class="nav-search">
+            <label for="nav-search-input"></label>
+            <input id="nav-search-input" placeholder="Type your search..." spellcheck="false" type="text"
+                   name="nav-search-input">
+            <div class="nav-search-button">
+                <a href="#"><i class="fas fa-search"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-icons-container">
+        <a href="#"><i class="fas fa-bell"></i></a>
+        <a href="/messages"><i class="fas fa-comment-alt"></i></a>
+    </div>
+    <div class="nav-user-container">
+        <img src="/img/Profile%20Picture.png" alt="profile-picture">
+        <a href="/profile">
+            <h4><%=user.FirstName %> <%=user.LastName %> <i class="fas fa-angle-down"></i></h4>
+        </a>
+    </div>
+</nav>

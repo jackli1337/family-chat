@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--incomplete--->
+    <meta name="description" content="#">
+    <!--incomplete--->
+    <meta name="keywords" content="#">
+
+
+    <meta property="og:title" content="Family Chat">
+    <!--incomplete--->
+    <meta property="og:description" content="#">
+    <!--incomplete--->
+    <meta property="og:image" content="#">
+    <!--incomplete--->
+    <meta property="og:url" content="#">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+        integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+    <title>Family Chat</title>
+</head>
+
+<body>
+    <main class="portal">
+        <div>
+            <div class="floaters">
+                <!-- <img id="img00" src="#" alt="#" />
+                <img id="img01" src="#" alt="#" />
+                <img id="img02" src="#" alt="#" /> -->
+            </div>
+            <div class="about">
+                <h2>Family Chat</h2>
+                <a>Social media strictly built for families</a>
+                <ul>
+                    <li> - share photo albums</li>
+                    <li> - view calendars</li>
+                    <li> - create group chats</li>
+                    <li> - review family timeline</li>
+                    <li> - automate group calls</li>
+                    <li> - track locations</li>
+                </ul>
+            </div>
+            <form id="signup-form" class="signup" action="/register" method="post">
+                <label>Start or join a family circle today!</label>
+                <input class="signup-field" id="signup-firstname" type="text" name="firstname"
+                    placeholder="Enter your first name" required>
+                <input class="signup-field" id="signup-lastname" type="text" name="lastname"
+                    placeholder="Enter your last name" required>
+                <input class="signup-field" id="signup-username" type="text" name="username"
+                    placeholder="Enter your username" pattern=".{,12}" title="12 characters maximum!" required>
+                <input class="signup-field" id="signup-email" type="email" name="email" placeholder="Enter your email"
+                    required>
+                <input class="signup-field" id="signup-password" type="password" name="password"
+                    placeholder="Enter your desired password" required>
+                <input class="signup-field" id="signup-reenter-password" type="password" name="reenter-password"
+                    placeholder="Re-enter your desired password" required>
+                <input class="signup-submit" type="submit" value="Join">
+                <div class="button" onclick="swapPortal('signup')">I have an account</div>
+            </form>
+            <form id="signin-form" class="login hidden" action="/login" method="post">
+                <label>Welcome back to the family!</label>
+                <input class="signin-field" id="signin-username" type="text" name="username"
+                    placeholder="Enter your username">
+                <input class="signin-field" id="signin-password" type="password" name="password"
+                    placeholder="Enter your password">
+                <input class="signin-submit" type="submit" value="Login">
+                <div class="button" onclick="swapPortal('login')">I don't have an account</div>
+            </form>
+            <footer>
+                <ol>
+                    <li>CSE312FamilyChat © 2020</li>
+                    <li>Terms</li>
+                    <li>Privacy</li>
+                    <li>Careers</li>
+                    <li>About</li>
+                </ol>
+            </footer>
+            <div class="canted"></div>
+        </div>
+    </main>
+    <script>
+        function swapPortal(page) {
+            if (page === `login`) {
+                document.getElementById(`signin-form`).classList.add(`hidden`);
+                document.getElementById(`signup-form`).classList.remove(`hidden`);
+            }
+            else {
+                document.getElementById(`signin-form`).classList.remove(`hidden`);
+                document.getElementById(`signup-form`).classList.add(`hidden`);
+            }
+            return false;
+        }
+    </script>
+</body>
+
+</html>

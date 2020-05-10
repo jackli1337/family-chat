@@ -2,6 +2,16 @@
   "name": "cse312",
   "version": "1.0.0",
   "dependencies": {
-    "express": "latest"
+    "archiver": "^3.1.1",
+    "bcrypt": "^4.0.1",
+    "ejs": "^3.0.2",
+    "escape-html": "^1.0.3",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.2",
+    "express-session": "^1.17.1",
+    "mongodb": "^3.5.5",
+    "monk": "^7.1.2",
+    "socket.io": "^2.3.0",
+    "socketio-file-upload": "^0.7.0"
   }
 }
