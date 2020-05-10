@@ -70,6 +70,9 @@ window.onload = function viaWebSocket() {
     sock.on(`scomment`, (data) => {
         renderComment(data);
     });
+    sock.on(`svote`, (data) => {
+        renderVote(data);
+    });
 };
 
 
@@ -102,8 +105,8 @@ function renderPost(data) {
                 </div>
 
                 <div class="post-tools">
-                    <button><i class="far fa-thumbs-up"></i> ${data.upvote.length}</button>
-                    <button><i class="far fa-thumbs-down"></i> ${data.downvote.length}</button>
+                    <button id="upvotes${data._id.toString()}" onclick="vote('up','${data._id.toString()}')"><i class="far fa-thumbs-up"></i>${data.Upvotes}</button>
+                    <button id="downvotes${data._id.toString()}" onclick="vote('down','${data._id.toString()}')"><i class="far fa-thumbs-down"></i>${data.Downvotes}</button>   
                     <!-- If post is an image, render button -->
                     <button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
                     <button><i class="fas fa-share"></i></button>
@@ -161,6 +164,21 @@ function renderComment(data) {
 
 
 }
+
+// ===== Render Vote ===== //
+function renderVote(data) {
+
+    console.log(data);
+
+     let upvotes = `<i class="far fa-thumbs-up"></i>${data.upsize}`;
+     let downvotes = `<i class="far fa-thumbs-down"></i>${data.downsize}`;
+     let postup = document.getElementById(`upvotes${data.post}`);
+     let postdown = document.getElementById(`downvotes${data.post}`);
+     postup.innerHTML = upvotes;
+     postdown.innerHTML = downvotes;
+     
+}
+
 
 // ===== Download ===== //
 function download(link) {

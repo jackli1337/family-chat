@@ -6,8 +6,7 @@ ENV HOME /root
 
 WORKDIR /root
 
-RUN apt-get update --fix-missing
-RUN apt-get install -y curl
+RUN apt-get update --fix-missing && apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install -y nodejs
