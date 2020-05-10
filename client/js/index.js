@@ -176,33 +176,7 @@ function renderVote(data) {
      let postdown = document.getElementById(`downvotes${data.post}`);
      postup.innerHTML = upvotes;
      postdown.innerHTML = downvotes;
-
-    // let parent = document.getElementById(`comment-history${data.parent}`);
-    // parent.innerHTML = inject;
-
-    // let parent = document.getElementById(`comment-history${data.parent}`);
-    // parent.innerHTML = inject;
-
-    // let inject = `
-    // <div>
-    //     <p>
-    //         ${data.comment}
-    //     </p>
-
-    //     <div class="post-author">
-    //         <div class="post-creation">
-    //             <button><i class="far fa-thumbs-up"></i> </button>
-    //             <button><i class="far fa-thumbs-down"></i> </button>
-    //             <h5 class="post-name">${data.fullname}</h5>
-    //             <h5 class="post-date">${newDate}</h5>
-    //         </div>
-    //     </div>
-    // </div>`;
-
-    // let parent = document.getElementById(`comment-history${data.parent}`);
-    // parent.innerHTML = inject;
-
-
+     
 }
 
 
