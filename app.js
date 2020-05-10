@@ -114,12 +114,16 @@ io.sockets.on('connection', (sock) => {
                     comments: [],
                     upvote: [],
                     downvote: [],
-                    date: curDate
+                    date: curDate,
+                    Upvotes: 0,
+                    Downvotes: 0
                 };
             postCollection.insert(newPost, function (err, postInserted) {
                 io.sockets.emit(`spost`, postInserted);
             });
         });
+
+        
 
         // listens for new comment
         sock.on(`scomment`, (data) => {
@@ -151,6 +155,188 @@ io.sockets.on('connection', (sock) => {
                 }
             );
         });
+
+        // listens for new vote
+        sock.on(`svote`, (data) => {
+            console.info(data);
+            let
+            postCollection = db.get('post'),
+            status = "";
+
+
+            postCollection.find({ _id: data.post }, function (err, result) {
+                
+                let target = result[0];
+                console.log(target);
+                var newDown = target.Downvotes;
+                var newUp = target.Upvotes;
+
+
+
+            if(data.option == "up"){
+
+                // if user has upvoted, remove vote
+                if (target.upvote.includes(user._id)) {
+
+                     postCollection.update(
+                        { _id: target._id },
+                        {   
+                            $inc: { Upvotes : -1 },
+
+                            $pull: {
+                                upvote: user._id
+                            }
+                        }
+                    );
+                    status = "remove upvote push";
+                    newUp--;
+                }
+
+                 // if user has downvoted, remove vote add upvote
+                 else if (target.downvote.includes(user._id)) {
+
+                    postCollection.update(
+                        { _id: target._id },
+                        {
+
+                            $inc: { Downvotes : -1 },
+
+                            $pull: {
+                                downvote: user._id
+                            }
+                        }
+                    );
+
+                    postCollection.update(
+                        { _id: target._id },
+                        {
+                            $inc: { Upvotes : 1 },
+
+                            $push: {
+                                upvote: user._id
+                            }
+                        }
+                    );
+
+                    status = "remove downvote push upvote";
+                    newDown--;
+                    newUp++;
+
+
+                }
+
+                // if user hasn't voted at all, push upvote
+                else {
+                    // get target, add to followers
+                    postCollection.update(
+                        { _id: target._id },
+                        {
+                            $inc: { Upvotes : 1 },
+
+                            $push: {
+                                upvote: user._id
+                            }
+                        }
+                    );
+                    status = "regular upvote push";
+                    newUp++;
+                }
+             } //end if statement
+
+
+
+
+             if(data.option == "down"){
+
+                // if user has downvoted, remove vote
+                if (target.downvote.includes(user._id)) {
+                    // get target, remove from followers
+                     postCollection.update(
+                        { _id: target._id },
+                        {
+
+                            $inc: { Downvotes : -1 },
+
+                            $pull: {
+                                downvote: user._id
+                            }
+                        }
+                    );
+                    status = "remove downvote push";
+                    newDown--;
+                }
+
+                 // if user has upvoted, remove vote push downvote
+                 else if (target.upvote.includes(user._id)) {
+
+                    postCollection.update(
+                        { _id: target._id },
+                        {
+
+                            $inc: { Upvotes : -1 },
+
+                            $pull: {
+                                upvote: user._id
+                            }
+                        }
+                    );
+
+                    postCollection.update(
+                        { _id: target._id },
+                        {
+
+                            $inc: { Downvotes : 1 },
+
+                            $push: {
+                                downvote: user._id
+                            }
+                        }
+                    );
+
+                    status = "remove upvote push downvote";
+                    newUp--;
+                    newDown++;
+
+                }
+
+                // if user hasn't voted at all, push downvote
+                else {
+
+                    postCollection.update(
+                        { _id: target._id },
+                        {
+                            $inc: { Downvotes : 1 },
+
+                            $push: {
+                                downvote: user._id
+                            }
+                        }
+                    );
+                    status = "regular downvote push";
+                    newDown++;
+                }
+             } //end downvote if statement
+
+
+   
+             console.log(newUp);
+             console.log(newDown);
+
+
+             let update = {
+                post : data.post,
+                upsize : newUp,
+                downsize : newDown
+            };
+
+                console.log(status);
+                io.sockets.emit(`svote`, update);
+            });
+        
+
+        });
+
+
 
         // listens for follow/unfollow
         sock.on(`sfollow`, (data) => {
