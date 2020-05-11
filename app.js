@@ -98,19 +98,6 @@ io.on('connection',  (sock) => {
         io.sockets.emit('status', s);
     }
 
-    //Get chats from mongo collection
-    chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err, res) {
-        if(err){
-            console.log("Chat between these 2 users doesn't exist");
-        } else {
-                //Emit the messages
-                console.log(res[0].messages);
-                io.sockets.emit('new message', res[0].messages);
-
-
-        }
-    });
-
     //handling input events
     //listen for new message
     sock.on('send message', function (data) {
@@ -119,6 +106,7 @@ io.on('connection',  (sock) => {
 
         let username = data.username;
         let message = data.message;
+        let userFriend = data.friend;
 
         //Check for name and message
         if(message.length > 0) {
@@ -129,17 +117,19 @@ io.on('connection',  (sock) => {
                 sender: username,
             };
 
-            chatCollection.update({users: [ 'sliu57', 'jackli123']},  { $push: { messages: msg} }, function (err, data) {
-                console.log("Added a new message");
-                console.info("The data is: ", data);
+                chatCollection.update({users: ['sliu57', 'jackli123']}, {$push: {messages: msg}}, function (err, data) {
+                    console.log("Added a new message");
+                    console.info("The data is: ", data);
 
-                let sentmsg = msg.message;
-                let sentuser = msg.sender;
+                    let sentmsg = msg.message;
+                    let sentuser = msg.sender;
 
-                io.sockets.emit('new message', { msgToSend: sentmsg, userSent: sentuser, data } );
+                    io.sockets.emit('new message', {msgToSend: sentmsg, userSent: sentuser, data});
 
-            });
+                });
 
+        } else {
+            console.log("Entered an empty message!")
         }
 
 
@@ -207,3 +197,24 @@ io.on('connection',  (sock) => {
 server.listen(port, () => {
     console.log('Server Started on Port ' + port)
 });
+
+// function checkUser (user1, user2){
+//     let chatCollection = db.get('chat');
+//
+//     chatCollection.find({ $or : [
+//             { users: $all [ user1.toString(), user2.toString()]},
+//             { users: $all [ user2.toString(), user1.toString()]}, function ( err, data) {
+//
+//                 data.update({ $push: { messages: msg} }, function (err, data) {
+//                     console.log("Added a new message");
+//                     console.info("The data is: ", data);
+//
+//                     let sentmsg = msg.message;
+//                     let sentuser = msg.sender;
+//
+//                     io.sockets.emit('new message', { msgToSend: sentmsg, userSent: sentuser, data } );
+//
+//                 });
+//             }
+//         ]})
+// }

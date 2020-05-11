@@ -108,18 +108,34 @@ let temp_chat = {
         ]
 
 };
+//
+// let temp_chat2 = {
+//     chat_id: '2',
+//     users: ['sliu57', 'davidc123'],
+//
+//     messages: [
+//         {
+//             message: "hi david",
+//             sender: 'sliu57',
+//         },
+//         {
+//             message: "hi steven!",
+//             sender: 'davidc123',
+//         }
+//     ]
+//
+// };
 
 //chatCollection.insert(temp_chat);
+//chatCollection.insert(temp_chat2);
 
-chatCollection.find({}).then((docs) => {
+//chatCollection.remove( { chat_id: '1'});
+//chatCollection.remove( { chat_id: '2'});
 
-    //chatCollection.remove( { chat_id: '1'});
-
-     console.log("All chats");
-     console.info(docs);
+chatCollection.find({}, function (err, result) {
+    console.log("All existing chats currently.");
+    console.info(result);
 });
-
-
 
 
 module.exports = router;

@@ -406,8 +406,8 @@ nav {
 
 .messages-container {
     color: black;
-    height: 100%;
-    overflow: scroll;
+    height: 500px;
+    overflow: auto
 }
 
 .message-left-wrapper {

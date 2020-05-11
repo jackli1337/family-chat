@@ -101,7 +101,16 @@ router.get('/messages', function (req, res) {
     let user = req.session.user;
 
     let chatArray = [];
-    let chatBuddy = 'Jack Li  ';
+    let chatBuddy = '';
+
+    if(user.Username === 'jackli123'){
+        chatBuddy = 'sliu57';
+    } else {
+        chatBuddy = 'jackli123';
+    }
+
+    console.log("THIS IS USER INFO: ")
+    console.info(user);
 
     if (user) {
 
@@ -118,10 +127,10 @@ router.get('/messages', function (req, res) {
                 console.log("This is the chat between Jack and Steven:");
 
                 console.info(chatArray);
+
+                res.render('messages', { user: user, chatArray: chatArray, chatBuddy: chatBuddy });
             }
         });
-
-        res.render('messages', { user: user, chatArray: chatArray, chatBuddy: chatBuddy });
     }
     else {
         res.redirect('/');

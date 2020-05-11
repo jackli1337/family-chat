@@ -392,7 +392,7 @@
                             <% for(var msgs of chatArray) { %>
 
                                 <li>
-                                    <%= msgs[0].sender%> : <%= msgs[0].message%>
+                                    <%= msgs.sender%> : <%= msgs.message%>
                                 </li>
                                 <br/>
 
@@ -432,6 +432,7 @@
     <script>
 
         const user = "<%=user.Username %>";
+        const friendy = "<%= chatBuddy%>";
 
         $(document).ready(function (){
             let socket = io.connect();
@@ -447,7 +448,8 @@
 
                 let object = {
                     username: user,
-                    message: $messageBox.val()
+                    message: $messageBox.val(),
+                    friend: friendy
                 };
 
                 socket.emit('send message', object);
