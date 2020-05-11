@@ -17,8 +17,6 @@ const
     - ProfilePic
     - OnlineStatus (Datatype: int[1=on, 0=off])
     - FamilyID
-    - Following
-    - Followers
  */
 
 /* Family Collection (Collection Name: family)
@@ -57,7 +55,35 @@ const
     - Vote (Datatype: int[1=up, 0=down])
  */
 
+/* Chatting Collection (Collection Name: chat)
+    - chat_id
+
+    messages: [
+        { message_id: 1
+          message: hi,
+          sender_id: 1,
+          receiver_id: 2,
+          timestamp: Date.now(),
+        },
+        { message_id: 2
+          message: What's up?,
+          sender_id: 1,
+          receiver_id: 2,
+          timestamp: Date.now(),
+        },
+
+ */
+
+
+
 let userCollection = db.get('users');
+
+userCollection.find({}).then((docs) => {
+    console.log("All users");
+    console.log(docs);
+});
+
+
 let familyCollection = db.get('family');
 let postCollection = db.get('post');
 let commentCollection = db.get('comment');
@@ -71,6 +97,55 @@ let voteCollection = db.get('vote');
 // voteCollection.drop();
 
 
+
+
+
+let chatCollection = db.get('chat');
+
+let temp_chat = {
+    chat_id: '1',
+    users: ['sliu57', 'jackli123'],
+
+    messages: [
+        {
+            message: "hi",
+            sender: 'sliu57',
+        },
+        {
+            message: "What's up?",
+            sender: 'jackli123',
+        }
+        ]
+
+};
+//
+// let temp_chat2 = {
+//     chat_id: '2',
+//     users: ['sliu57', 'davidc123'],
+//
+//     messages: [
+//         {
+//             message: "hi david",
+//             sender: 'sliu57',
+//         },
+//         {
+//             message: "hi steven!",
+//             sender: 'davidc123',
+//         }
+//     ]
+//
+// };
+
+//chatCollection.insert(temp_chat);
+//chatCollection.insert(temp_chat2);
+
+//chatCollection.remove( { chat_id: '1'});
+//chatCollection.remove( { chat_id: '2'});
+
+chatCollection.find({}, function (err, result) {
+    console.log("All existing chats currently.");
+    console.info(result);
+});
 
 
 module.exports = router;

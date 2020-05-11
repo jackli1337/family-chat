@@ -5,6 +5,7 @@ const express = require('express'),
     mongo = require('mongodb'),
     monk = require('monk'),
     db = monk('mongo:27017/familychat');
+let current = true;
 
 router.use(express.static(path.join(__dirname, 'client')));
 
@@ -34,6 +35,9 @@ router.post('/login', function (req, res) {
 
 // Register Request
 router.post('/register', function (req, res) {
+
+    let userCollection = db.get('users');
+
     let userInput = {
         FirstName: req.body.firstname,
         LastName: req.body.lastname,
@@ -41,6 +45,7 @@ router.post('/register', function (req, res) {
         Password: req.body.password,
         Email: req.body.email
     };
+
 
     console.log(`==============USER INPUT==============`);
     console.log(userInput);
@@ -51,6 +56,12 @@ router.post('/register', function (req, res) {
                 req.session.user = result;
                 res.redirect('/feed');
             });
+
+            userCollection.find({}).then((docs) => {
+                console.log("New user added...New userCollection:");
+                console.log(docs);
+            });
+
         }
         else {
             res.send('Error creating a new user...username or email already exists!');
@@ -89,8 +100,33 @@ router.get('/feed', function (req, res) {
 // Messages
 router.get('/messages', function (req, res) {
     let user = req.session.user;
+
+    let chatArray = [];
+    let chatBuddy = '';
+
+
+    console.log("THIS IS USER INFO: ")
+    console.info(user);
+
     if (user) {
-        res.render('messages', { user: user });
+
+        let chatCollection = db.get('chat');
+
+        chatCollection.find({ users: [ 'sliu57', 'jackli123']}, function (err, result) {
+            if(err){
+                console.log("Chat doesn't exist");
+            } else {
+                console.info(result[0].messages);
+
+                chatArray = result[0].messages;
+
+                console.log("This is the chat between Jack and Steven:");
+
+                console.info(chatArray);
+
+                res.render('messages', { user: user, chatArray: chatArray, chatBuddy: chatBuddy });
+            }
+        });
     }
     else {
         res.redirect('/');

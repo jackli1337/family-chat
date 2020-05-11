@@ -83,19 +83,64 @@ io.sockets.on('connection', (sock) => {
 
         console.log(sock.id + " has connected!");
 
-        var uploader = new SocketIOFileUpload();
-        uploader.dir = "client/users/ids/1"; // + FILENAME
-        uploader.listen(sock);
+    var uploader = new SocketIOFileUpload();
+    uploader.dir = "client/users/ids/1"; // + FILENAME
+    uploader.listen(sock);
 
-        // Do something when a file is saved:
-        uploader.on("saved", function (event) {
-            console.log(event.file);
+    // Do something when a file is saved:
+    uploader.on("saved", function (event) {
+        console.log(event.file);
+    });
+
+    // Error handler:
+    uploader.on("error", function (event) {
+        console.log("Error from uploader", event);
+    });
+
+        let chatArray = [];
+        let chatCollection = db.get('chat');
+        //function to send status
+        sendStatus = function (s) {
+            io.sockets.emit('status', s);
+        }
+
+        //handling input events
+        //listen for new message
+        sock.on('send message', function (data) {
+
+            let chatCollection = db.get('chat');
+
+            let username = data.username;
+            let message = data.message;
+            let userFriend = data.friend;
+
+            //Check for name and message
+            if (message.length > 0) {
+
+                //insert message
+                var msg = {
+                    message: message,
+                    sender: username,
+                };
+
+                chatCollection.update({users: ['sliu57', 'jackli123']}, {$push: {messages: msg}}, function (err, data) {
+                    console.log("Added a new message");
+                    console.info("The data is: ", data);
+
+                    let sentmsg = msg.message;
+                    let sentuser = msg.sender;
+
+                    io.sockets.emit('new message', {msgToSend: sentmsg, userSent: sentuser, data});
+
+                });
+
+            } else {
+                console.log("Entered an empty message!")
+            }
+
+
         });
 
-        // Error handler:
-        uploader.on("error", function (event) {
-            console.log("Error from uploader", event);
-        });
 
         // listens for new post
         sock.on(`spost`, (data) => {
@@ -124,8 +169,6 @@ io.sockets.on('connection', (sock) => {
                 io.sockets.emit(`spost`, postInserted);
             });
         });
-
-        
 
         // listens for new comment
         sock.on(`scomment`, (data) => {
@@ -167,7 +210,7 @@ io.sockets.on('connection', (sock) => {
 
 
             postCollection.find({ _id: data.post }, function (err, result) {
-                
+
                 let target = result[0];
                 console.log(target);
                 var newDown = target.Downvotes;
@@ -182,7 +225,7 @@ io.sockets.on('connection', (sock) => {
 
                      postCollection.update(
                         { _id: target._id },
-                        {   
+                        {
                             $inc: { Upvotes : -1 },
 
                             $pull: {
@@ -320,7 +363,7 @@ io.sockets.on('connection', (sock) => {
              } //end downvote if statement
 
 
-   
+
              console.log(newUp);
              console.log(newDown);
 
@@ -334,7 +377,7 @@ io.sockets.on('connection', (sock) => {
                 console.log(status);
                 io.sockets.emit(`svote`, update);
             });
-        
+
 
         });
 

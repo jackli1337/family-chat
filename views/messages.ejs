@@ -42,8 +42,8 @@
                                 <img src="/img/Profile%20Picture.png" alt="pfp">
                             </div>
                             <div class="contact-name">
-                                <h5>John Doe</h5>
-                                <a>What time are you going to gym?</a>
+                                <h5><%= chatBuddy%></h5>
+                                <a>Sure man. Of course1</a>
                             </div>
                         </div>
                         <div class="contact-right">
@@ -382,39 +382,25 @@
         <div class="messages-chat-box">
             <div class="chat-box-container">
                 <div class="chat-box-header">
-                    <h3>John Doe</h3>
+                    <h3><%= chatBuddy%></h3>
                     <a href="#"><i class="fas fa-bars"></i></a>
                 </div>
-                <div class="chat-box-messages">
-                    <div class="messages-container">
-                        <div class="message-left-wrapper">
-                            <div class="message-left">
-                                <div class="message-pfp">
-                                    <img src="/img/Profile%20Picture.png" alt="pfp">
-                                </div>
-                                <div class="message-info">
-                                    <a class="message-from">John Doe</a>
-                                    <div class="message-message">
-                                        <span>Hello, I'm John!</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="message-right-wrapper">
-                            <div class="message-right">
-                                <div class="message-info">
-                                    <a class="message-from">John Doe</a>
-                                    <div class="message-message">
-                                        <span>Hello, I'm also John!</span>
-                                    </div>
-                                </div>
-                                <div class="message-pfp">
-                                    <img src="/img/Profile%20Picture.png" alt="pfp">
-                                </div>
-                            </div>
-                        </div>
+
+                <div id="chat-box-messages" class="chat-box-messages">
+                    <div id="messages-container" class="messages-container">
+                        <ul>
+                            <% for(var msgs of chatArray) { %>
+
+                                <li>
+                                    <%= msgs.sender%> : <%= msgs.message%>
+                                </li>
+                                <br/>
+
+                            <% } %>
+                        </ul>
                     </div>
                 </div>
+
                 <div class="chat-box-text">
                     <div class="chat-box-icons">
                         <div class="icons-left">
@@ -428,10 +414,12 @@
                     </div>
                     <div class="message-input-container">
                         <label for="message-input"></label>
-                        <textarea id="message-input" placeholder="Send a message, be nice!" name="message-input"></textarea>
+                        <textarea id="message-input" placeholder="Send a message, be nice!" name="message-input" form="send-message"></textarea>
                     </div>
                     <div class="message-send-button">
-                        <a href="#"><i class="fas fa-paper-plane"></i></a>
+                        <form id="send-message">
+                            <input type="submit" value="Enter">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -439,5 +427,59 @@
     </main>
     <script src="/js/index.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <script>
+
+        const user = "<%=user.Username %>";
+        const friendy = "<%= chatBuddy%>";
+
+        $(document).ready(function (){
+            let socket = io.connect();
+
+            let $messageForm = $('#send-message');
+            let $messageBox = $('#message-input');
+            let $chat = $('#messages-container');
+            let $user = $('#username');
+
+
+            $messageForm.submit(function (e) {
+                e.preventDefault();
+
+                let object = {
+                    username: user,
+                    message: $messageBox.val(),
+                    friend: friendy
+                };
+
+                socket.emit('send message', object);
+                $messageBox.val('');
+            });
+
+            socket.on('new message', function (data) {
+                console.log("New message sent back to client.");
+
+                $chat.append(data.userSent + ": " + data.msgToSend + "<br/>" + "<br/>");
+            });
+
+
+            // socket.on('new message', function (data) {
+            //     console.log(data);
+            //
+            //     if(data.length){
+            //         for(let x; x < data.length; x++){
+            //             let message = document.createElement('div');
+            //             message.setAttribute('class', 'chat-message');
+            //             message.textContent = data[x].username + ": " + data[x].message;
+            //             $chat.append(message + "<br/>");
+            //             $chat.insertBefore(message, $chat.firstChild);
+            //         }
+            //     }
+            // });
+
+
+
+        });
+    </script>
 </body>
 </html>
