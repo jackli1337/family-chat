@@ -79,7 +79,7 @@ app.use((err, req, res, next) => {
 io.sockets.on('connection',  (sock) => {
 
     if (sock.request.session.user) {
-
+        let user = socket.request.session.user;
 
         console.log(sock.id + " has connected!");
 
