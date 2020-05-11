@@ -5,6 +5,7 @@ const express = require('express'),
     mongo = require('mongodb'),
     monk = require('monk'),
     db = monk('mongo:27017/familychat');
+let current = true;
 
 router.use(express.static(path.join(__dirname, 'client')));
 
@@ -103,11 +104,6 @@ router.get('/messages', function (req, res) {
     let chatArray = [];
     let chatBuddy = '';
 
-    if(user.Username === 'jackli123'){
-        chatBuddy = 'sliu57';
-    } else {
-        chatBuddy = 'jackli123';
-    }
 
     console.log("THIS IS USER INFO: ")
     console.info(user);

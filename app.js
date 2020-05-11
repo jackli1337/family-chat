@@ -198,23 +198,3 @@ server.listen(port, () => {
     console.log('Server Started on Port ' + port)
 });
 
-// function checkUser (user1, user2){
-//     let chatCollection = db.get('chat');
-//
-//     chatCollection.find({ $or : [
-//             { users: $all [ user1.toString(), user2.toString()]},
-//             { users: $all [ user2.toString(), user1.toString()]}, function ( err, data) {
-//
-//                 data.update({ $push: { messages: msg} }, function (err, data) {
-//                     console.log("Added a new message");
-//                     console.info("The data is: ", data);
-//
-//                     let sentmsg = msg.message;
-//                     let sentuser = msg.sender;
-//
-//                     io.sockets.emit('new message', { msgToSend: sentmsg, userSent: sentuser, data } );
-//
-//                 });
-//             }
-//         ]})
-// }
