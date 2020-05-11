@@ -53,39 +53,44 @@
 						</div>
 
 						<div class="post-creation">
-							<a class="post-name"> <%= data.user_id%></a>
+							<a class="post-name"> <%= data.fullname%></a>
 							<a class="post-date"> <%= data.date%></a>
 						</div>
 					</div>
 
 					<div class="post-body">
 						<p id="postContent<%= data._id%>"><%= data.content.post%></p>
-						<img src="<%= data.filepath%>">
+
+						<%if(data.filepath.length !== 0){ %>
+						<img src="<%= data.filepath%>" />
+						<% } %>
 					</div>
 
 					<div class="post-tools">
-						<button id="upvotes<%= data._id%>" onclick="vote('up','<%= data._id%>')"><i class="far fa-thumbs-up"></i><%=data.Upvotes%></button>
-						<button id="downvotes<%= data._id%>" onclick="vote('down','<%= data._id%>')"><i class="far fa-thumbs-down"></i><%=data.Downvotes%></button>
+						<button id="upvotes<%= data._id%>" onclick="vote('up','<%= data._id%>')"><i
+								class="far fa-thumbs-up"></i><%=data.Upvotes%></button>
+						<button id="downvotes<%= data._id%>" onclick="vote('down','<%= data._id%>')"><i
+								class="far fa-thumbs-down"></i><%=data.Downvotes%></button>
 						<script>
 							//Send Post Request from JS
-						function vote(choice, postID){
-							//Post JSON with choice,postid,userid
-							//var postID = "<%= data._id%>";
-							let toSend = {
-								option : choice,
-								post : postID,
-								user : ""
-							};
+							function vote(choice, postID) {
+								//Post JSON with choice,postid,userid
+								//var postID = "<%= data._id%>";
+								let toSend = {
+									option: choice,
+									post: postID,
+									user: ""
+								};
 
-							let jsonString = JSON.stringify(toSend);
-							//console.info(toSend);
+								let jsonString = JSON.stringify(toSend);
+								//console.info(toSend);
 
-						     var socket = io('http://localhost:7000');
-							 socket.emit('svote',toSend);
-						
-							
-							
-						}
+								var socket = io(`${window.location.host}`);
+								socket.emit('svote', toSend);
+
+
+
+							}
 						</script>
 						<!-- If post is an image, render button -->
 						<button onclick="saveImage()"><i class="fas fa-file-download"></i></button>
@@ -102,9 +107,7 @@
 
 							<div class="post-author">
 								<div class="post-creation">
-									<button><i class="far fa-thumbs-up"></i> </button>
-									<button><i class="far fa-thumbs-down"></i> </button>
-									<h5 class="post-name"><%= data2.user_id%></h5>
+									<h5 class="post-name"><%= data2.fullname%></h5>
 									<h5 class="post-date"><%= data2.date%></h5>
 								</div>
 							</div>
@@ -113,7 +116,8 @@
 
 					</div>
 					<div class="post-comments">
-						<textarea id="pc-comment<%= data._id%>" class="comment" wrap="hard" placeholder="Add a comment..."></textarea>
+						<textarea id="pc-comment<%= data._id%>" class="comment" wrap="hard"
+							placeholder="Add a comment..."></textarea>
 						<input class="scomment" id="c<%= data._id%>" type="submit" value="comment" />
 					</div>
 				</div>

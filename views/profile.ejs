@@ -36,7 +36,7 @@
                 </div>
                 <div class="profile-info">
                     <div class="profile-name">
-                        <h3><%=user.FirstName %> <%=user.LastName %></h3>
+                        <h3><%=target.FirstName %> <%=target.LastName %></h3>
 
 
                         <% if(target.Username === user.Username){ %>
@@ -46,7 +46,8 @@
                         <%} else {%>
                         <button id="<%= target._id%>" class="follow-button">Follow</button>
                         <% } if(target.FamilyID.length !== 0 ){ %>
-                        <button class="family-button" onclick="location.href='<%=target.FamilyID %>'">View Family</button>
+                        <button class="family-button" onclick="location.href='<%=target.FamilyID %>'">View
+                            Family</button>
                         <%} %>
                     </div>
                     <div class="profile-stats">
@@ -64,10 +65,61 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+        <% if(target.Followers.includes(user._id) || target.Username === user.Username){ %>
+        <div id="feedView">
+            <% for(var data of posts) { %>
+            <div class="post" id="<%= data._id%>">
+                <div class="content-section" style="height: fit-content;">
+                    <h1 id="postTitle<%= data._id%>"><%= data.content.title%></h1>
+                    <div class="post-author">
+                        <div class="post-pfp">
+                            <img src="/img/Profile%20Picture.png">
+                        </div>
+
+                        <div class="post-creation">
+                            <a class="post-name"> <%= data.fullname%></a>
+                            <a class="post-date"> <%= data.date%></a>
+                        </div>
+                    </div>
+
+                    <div class="post-body">
+                        <p id="postContent<%= data._id%>"><%= data.content.post%></p>
+
+                        <%if(data.filepath.length !== 0){ %>
+                        <img src="<%= data.filepath%>" />
+                        <% } %>
+                    </div>
+                </div>
+                <div class="comment-section" style="height: 230px;">
+                    <div class="comment-history" id="comment-history<%= data._id%>">
+                        <% for(var data2 of data.comments) { %>
+                        <div>
+                            <p>
+                                <%= data2.comment%>
+                            </p>
+
+                            <div class="post-author">
+                                <div class="post-creation">
+                                    <h5 class="post-name"><%= data2.fullname%></h5>
+                                    <h5 class="post-date"><%= data2.date%></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% } else {%>
+            <div>
+                <p>Follow to see posts.</p>
+            </div>
+            <% } %>
     </main>
-	<script src="/js/profile.js"></script>
+    <script src="/js/profile.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 </body>
 
